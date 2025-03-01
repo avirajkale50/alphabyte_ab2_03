@@ -7,6 +7,7 @@ import "react-calendar/dist/Calendar.css"; // Calendar styles
 
 const DoctorDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
+  const [unsavedChanges, setUnsavedChanges] = useState({});
   const [isCalendarOpen, setIsCalendarOpen] = useState(false); // State for calendar modal
   const [selectedDate, setSelectedDate] = useState(new Date()); // Selected date for calendar
   const [latestNews, setLatestNews] = useState([]); // State for latest medical news
@@ -57,18 +58,18 @@ const DoctorDashboard = () => {
     },
   ];
 
-  // Doctor profile data (fetched from Clerk)
+  // Doctor profile data (initialized from unsafeMetadata)
   const [doctorProfile, setDoctorProfile] = useState({
-    name: user?.fullName || "Your Name Here",
-    specialty: "Your Field Here", // Can be extended with custom metadata
+    name: user?.unsafeMetadata?.name || user?.fullName || "Your Name Here",
+    specialty: user?.unsafeMetadata?.specialty || "Your Field Here",
     id: user?.id || "DOC-23456",
     email: user?.primaryEmailAddress?.emailAddress || "Email Here",
-    phone: user?.phoneNumbers?.[0]?.phoneNumber || "Phone Number Here",
-    hospitalName: "Add Your Hospital", // Can be extended with custom metadata
-    experience: "Add Your Experience", // Can be extended with custom metadata
-    patients: 1243,
-    consultations: 5678,
-    rating: 4.8,
+    phone: user?.unsafeMetadata?.phone || "Phone Number Here",
+    hospitalName: user?.unsafeMetadata?.hospitalName || "Add Your Hospital",
+    experience: user?.unsafeMetadata?.experience || "Add Your Experience",
+    patients: user?.unsafeMetadata?.patients || 1243,
+    consultations: user?.unsafeMetadata?.consultations || 5678,
+    rating: user?.unsafeMetadata?.rating || 4.8,
   });
 
   // Fetch latest news related to doctor's specialty
@@ -119,9 +120,36 @@ const DoctorDashboard = () => {
     navigate("/otp"); // Redirect to /otp route
   };
 
+  // When switching away from the "Settings" tab, reset the unsavedChanges state to avoid carrying over unsaved changes
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    setUnsavedChanges({}); // Reset unsaved changes
+  };
+
   // Handle profile update
-  const handleProfileUpdate = (updatedProfile) => {
-    setDoctorProfile({...doctorProfile, ...updatedProfile});
+  const handleProfileUpdate = async (updatedProfile) => {
+    try {
+      // Update the unsafeMetadata with the new profile data
+      await user.update({
+        unsafeMetadata: {
+          ...user.unsafeMetadata, // Preserve existing metadata
+          ...updatedProfile,      // Add new profile data
+        },
+      });
+  
+      // Update the local state to reflect the changes
+      setDoctorProfile((prevProfile) => ({
+        ...prevProfile,
+        ...updatedProfile,
+      }));
+  
+      // Clear unsaved changes
+      setUnsavedChanges({});
+  
+      console.log("Profile updated successfully!");
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
   };
 
   // Render appropriate content based on active tab
@@ -330,79 +358,79 @@ const DoctorDashboard = () => {
             <p>Complete report management system would appear here.</p>
           </div>
         );
-      case "settings":
-        return (
-          <div className="bg-white p-6 rounded-xl shadow-md">
-            <h3 className="text-lg font-semibold mb-4">Profile Settings</h3>
-            <form className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                  <input 
-                    type="text" 
-                    value={doctorProfile.name}
-                    onChange={(e) => handleProfileUpdate({name: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  />
+        case "settings":
+          return (
+            <div className="bg-white p-6 rounded-xl shadow-md">
+              <h3 className="text-lg font-semibold mb-4">Profile Settings</h3>
+              <form className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                    <input 
+                      type="text" 
+                      value={unsavedChanges.name || doctorProfile.name}
+                      onChange={(e) => setUnsavedChanges({ ...unsavedChanges, name: e.target.value })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Specialty</label>
+                    <input 
+                      type="text" 
+                      value={unsavedChanges.specialty || doctorProfile.specialty}
+                      onChange={(e) => setUnsavedChanges({ ...unsavedChanges, specialty: e.target.value })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input 
+                      type="email" 
+                      value={unsavedChanges.email || doctorProfile.email}
+                      onChange={(e) => setUnsavedChanges({ ...unsavedChanges, email: e.target.value })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                    <input 
+                      type="text" 
+                      value={unsavedChanges.phone || doctorProfile.phone}
+                      onChange={(e) => setUnsavedChanges({ ...unsavedChanges, phone: e.target.value })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Hospital</label>
+                    <input 
+                      type="text" 
+                      value={unsavedChanges.hospitalName || doctorProfile.hospitalName}
+                      onChange={(e) => setUnsavedChanges({ ...unsavedChanges, hospitalName: e.target.value })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Experience</label>
+                    <input 
+                      type="text" 
+                      value={unsavedChanges.experience || doctorProfile.experience}
+                      onChange={(e) => setUnsavedChanges({ ...unsavedChanges, experience: e.target.value })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    />
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Specialty</label>
-                  <input 
-                    type="text" 
-                    value={doctorProfile.specialty}
-                    onChange={(e) => handleProfileUpdate({specialty: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  />
+                <div className="pt-4">
+                  <button 
+                    type="button"
+                    onClick={() => handleProfileUpdate(unsavedChanges)}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                  >
+                    Save Changes
+                  </button>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                  <input 
-                    type="email" 
-                    value={doctorProfile.email}
-                    onChange={(e) => handleProfileUpdate({email: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                  <input 
-                    type="text" 
-                    value={doctorProfile.phone}
-                    onChange={(e) => handleProfileUpdate({phone: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Hospital</label>
-                  <input 
-                    type="text" 
-                    value={doctorProfile.hospitalName}
-                    onChange={(e) => handleProfileUpdate({hospitalName: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Experience</label>
-                  <input 
-                    type="text" 
-                    value={doctorProfile.experience}
-                    onChange={(e) => handleProfileUpdate({experience: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  />
-                </div>
-              </div>
-              <div className="pt-4">
-                <button 
-                  type="button"
-                  onClick={() => setActiveTab("overview")}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                >
-                  Save Changes
-                </button>
-              </div>
-            </form>
-          </div>
-        );
+              </form>
+            </div>
+          );
       default:
         return <div>Select a tab to view content</div>;
     }
@@ -479,7 +507,7 @@ const DoctorDashboard = () => {
             </h2>
             <nav className="hidden md:flex space-x-6">
               <button
-                onClick={() => setActiveTab("overview")}
+                onClick={() => handleTabChange("overview")}
                 className={`px-2 py-1 font-medium ${
                   activeTab === "overview"
                     ? "text-blue-600 border-b-2 border-blue-600"
@@ -487,6 +515,36 @@ const DoctorDashboard = () => {
                 }`}
               >
                 Overview
+              </button>
+              <button
+                onClick={() => handleTabChange("patients")}
+                className={`px-2 py-1 font-medium ${
+                  activeTab === "patients"
+                    ? "text-blue-600 border-b-2 border-blue-600"
+                    : "text-gray-600 hover:text-blue-600"
+                }`}
+              >
+                Patients
+              </button>
+              <button
+                onClick={() => handleTabChange("reports")}
+                className={`px-2 py-1 font-medium ${
+                  activeTab === "reports"
+                    ? "text-blue-600 border-b-2 border-blue-600"
+                    : "text-gray-600 hover:text-blue-600"
+                }`}
+              >
+                Reports
+              </button>
+              <button
+                onClick={() => handleTabChange("settings")}
+                className={`px-2 py-1 font-medium ${
+                  activeTab === "settings"
+                    ? "text-blue-600 border-b-2 border-blue-600"
+                    : "text-gray-600 hover:text-blue-600"
+                }`}
+              >
+                Settings
               </button>
               <button
                 onClick={() => setActiveTab("patients")}
