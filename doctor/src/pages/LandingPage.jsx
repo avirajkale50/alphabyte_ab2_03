@@ -233,7 +233,7 @@ function LandingPage() {
               transition={{ duration: 0.5 }}
             >
               Enhancing Clinical Decision
-              <span className="text-blue-400"> Support Systems</span>
+              <span className="text-blue-500"> Support Systems</span>
             </motion.h1>
             <motion.h2
               className="mt-2 text-2xl md:text-3xl font-semibold text-blue-300"
@@ -277,7 +277,7 @@ function LandingPage() {
           <section className="py-12 transition-colors duration-200 hidden lg:block">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                <div className="p-6">
                   <div className="text-center">
                     <p className="text-4xl md:text-5xl font-bold text-blue-400">
                       <CountUp end={98} duration={2.5} suffix="%" />
@@ -288,7 +288,7 @@ function LandingPage() {
                   </div>
                 </div>
 
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                <div className="p-6">
                   <div className="text-center">
                     <p className="text-4xl md:text-5xl font-bold text-blue-400">
                       <CountUp end={500} duration={2.5} suffix="+" />
@@ -299,7 +299,7 @@ function LandingPage() {
                   </div>
                 </div>
 
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                <div className="p-6">
                   <div className="text-center">
                     <p className="text-4xl md:text-5xl font-bold text-blue-400">
                       <CountUp end={30} duration={2.5} suffix="M+" />
@@ -310,7 +310,7 @@ function LandingPage() {
                   </div>
                 </div>
 
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                <div className="p-6">
                   <div className="text-center">
                     <p className="text-4xl md:text-5xl font-bold text-blue-400">
                       <CountUp end={45} duration={2.5} suffix="%" />
