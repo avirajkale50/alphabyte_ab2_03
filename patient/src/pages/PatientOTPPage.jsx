@@ -1,18 +1,19 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useUser } from "@clerk/clerk-react"; // Import Clerk's useUser hook
 
 const PatientOTPPage = () => {
   const [driveLink, setDriveLink] = useState("");
   const [isLinkValid, setIsLinkValid] = useState(false);
   const [generatedOTP, setGeneratedOTP] = useState(null);
-  const [pickerApiLoaded, setPickerApiLoaded] = useState(false);
-  const [oauthToken, setOauthToken] = useState('');
   const [showOTPCard, setShowOTPCard] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
   const [linkStatus, setLinkStatus] = useState({ success: false, message: '' });
-  const [userProfile] = useState({
-    name: "Rahul Verma",
-    image: "https://ui-avatars.com/api/?name=Rahul+Verma&background=0D8ABC&color=fff"
-  });
+  const [otpExpiration, setOtpExpiration] = useState(null);
+  const [countdown, setCountdown] = useState(30);
+
+  // Use Clerk's useUser hook to get the authenticated user
+  const { user } = useUser();
 
   // Handle drive link validation
   const handleDriveLinkChange = (e) => {
@@ -35,66 +36,89 @@ const PatientOTPPage = () => {
   };
 
   // Handle OTP generation
-  const handleGenerateOTP = () => {
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    setGeneratedOTP(otp);
-    setShowOTPCard(true);
-    // Here you would typically send this OTP to the backend
-    console.log("Generated OTP:", otp);
+  const handleGenerateOTP = async () => {
+    if (!user) {
+      alert("Please log in to generate an OTP.");
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/generate-otp', {
+        patientId: user.id // Use Clerk's user.id as the patient ID
+      });
+      
+      if (response.data.success) {
+        setGeneratedOTP(response.data.otp);
+        setShowOTPCard(true);
+        
+        // Set expiration time
+        const expiresIn = response.data.expiresIn || 30;
+        setCountdown(expiresIn);
+        setOtpExpiration(new Date(new Date().getTime() + expiresIn * 1000));
+      }
+    } catch (error) {
+      console.error("Error generating OTP:", error);
+    }
   };
+
+  // Countdown timer for OTP expiration
+  useEffect(() => {
+    let timer;
+    if (otpExpiration) {
+      timer = setInterval(() => {
+        const now = new Date();
+        const secondsLeft = Math.floor((otpExpiration - now) / 1000);
+        
+        if (secondsLeft <= 0) {
+          clearInterval(timer);
+          setCountdown(0);
+          setGeneratedOTP(null);
+          setShowOTPCard(false);
+        } else {
+          setCountdown(secondsLeft);
+        }
+      }, 1000);
+    }
+    
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [otpExpiration]);
 
   const handleRefreshOTP = () => {
     handleGenerateOTP();
   };
 
-  const handleExpireSession = () => {
-    setGeneratedOTP(null);
-    setShowOTPCard(false);
+  const handleExpireSession = async () => {
+    if (!user) {
+      alert("Please log in to expire the session.");
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/end-session', {
+        patientId: user.id // Use Clerk's user.id as the patient ID
+      });
+      
+      if (response.data.success) {
+        setGeneratedOTP(null);
+        setShowOTPCard(false);
+        setOtpExpiration(null);
+      }
+    } catch (error) {
+      console.error("Error ending session:", error);
+    }
   };
 
   const handleCopyOTP = () => {
     navigator.clipboard.writeText(generatedOTP);
     setCopySuccess(true);
-    // Keep the success state longer - 3 seconds
     setTimeout(() => setCopySuccess(false), 3000);
   };
 
   const handleFolderSelect = () => {
-    // This is a placeholder for Google Drive Picker API integration
-    // You'll need to implement the Google Drive Picker API here
+    // Placeholder for Google Drive Picker API integration
     console.log("Open folder selector");
-  };
-
-  const loadGoogleDriveApi = () => {
-    const script = document.createElement('script');
-    script.src = 'https://apis.google.com/js/api.js';
-    script.onload = () => {
-      window.gapi.load('picker', () => {
-        setPickerApiLoaded(true);
-      });
-    };
-    document.body.appendChild(script);
-  };
-
-  const createPicker = () => {
-    const picker = new window.google.picker.PickerBuilder()
-      .addView(window.google.picker.ViewId.FOLDERS)
-      .setOAuthToken(oauthToken)
-      .setCallback(pickerCallback)
-      .build();
-    picker.setVisible(true);
-  };
-
-  const pickerCallback = (data) => {
-    if (data.action === window.google.picker.Action.PICKED) {
-      const folder = data.docs[0];
-      setDriveLink(`https://drive.google.com/drive/folders/${folder.id}`);
-      setIsLinkValid(true);
-      setLinkStatus({
-        success: true,
-        message: 'Folder selected successfully!'
-      });
-    }
   };
 
   return (
@@ -102,7 +126,10 @@ const PatientOTPPage = () => {
       {/* Sidebar */}
       <div className="w-80 bg-white shadow-lg p-6 flex flex-col">
         <div className="text-center mb-6">
-          <h2 className="text-xl font-bold text-gray-800">Patient Controls</h2>
+          <h2 className="text-xl font-bold text-gray-800">
+            SEWA<span className="text-blue-700 ml-1">मित्र</span>
+          </h2>
+          <p className="text-sm text-gray-600 mt-1">Patient Portal</p>
         </div>
 
         <div className="flex-1 space-y-4">
@@ -130,13 +157,13 @@ const PatientOTPPage = () => {
         <div className="mt-auto pt-6 border-t border-gray-200">
           <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
             <img 
-              src={userProfile.image} 
-              alt={userProfile.name}
+              src={user?.imageUrl || "https://ui-avatars.com/api/?name=User&background=0D8ABC&color=fff"} 
+              alt={user?.fullName || "User"}
               className="h-10 w-10 rounded-full border-2 border-blue-500"
             />
             <div className="flex-1">
-              <p className="text-sm font-medium text-gray-800">{userProfile.name}</p>
-              <p className="text-xs text-gray-500">View Profile</p>
+              <p className="text-sm font-medium text-gray-800">{user?.fullName || "User"}</p>
+              <p className="text-xs text-gray-500">Patient ID: {user?.id || "N/A"}</p>
             </div>
           </div>
         </div>
@@ -149,6 +176,9 @@ const PatientOTPPage = () => {
             <div className="text-center mb-6">
               <h2 className="text-2xl font-bold text-gray-800 mb-2">Generated OTP</h2>
               <p className="text-base text-gray-600">Share this OTP with your doctor to grant access</p>
+              <p className="text-sm text-orange-500 mt-1">
+                Expires in: <span className="font-bold">{countdown} seconds</span>
+              </p>
             </div>
 
             <div className="bg-blue-50 rounded-lg p-6 mb-6">
@@ -202,7 +232,7 @@ const PatientOTPPage = () => {
               </button>
             </div>
 
-            {/* Enhanced Status Message */}
+            {/* Status Message */}
             {linkStatus.success && (
               <div className="mt-6 p-4 bg-green-100 border-l-4 border-green-500 rounded-lg shadow-md">
                 <p className="text-lg font-medium text-green-800 flex items-center">
