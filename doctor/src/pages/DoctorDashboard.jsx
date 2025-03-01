@@ -59,11 +59,11 @@ const DoctorDashboard = () => {
 
   // Doctor profile data (fetched from Clerk)
   const [doctorProfile, setDoctorProfile] = useState({
-    name: user?.fullName || "Dr. John Doe",
-    specialty: "Cardiologist", // Can be extended with custom metadata
+    name: user?.fullName || "Your Name Here",
+    specialty: "Your Field Here", // Can be extended with custom metadata
     id: user?.id || "DOC-23456",
-    email: user?.primaryEmailAddress?.emailAddress || "john.doe@sewamitr.org",
-    phone: user?.phoneNumbers?.[0]?.phoneNumber || "+91 98765 43210",
+    email: user?.primaryEmailAddress?.emailAddress || "Email Here",
+    phone: user?.phoneNumbers?.[0]?.phoneNumber || "Phone Number Here",
     hospitalName: "Sewa Medical Center", // Can be extended with custom metadata
     experience: "15 years", // Can be extended with custom metadata
     patients: 1243,
