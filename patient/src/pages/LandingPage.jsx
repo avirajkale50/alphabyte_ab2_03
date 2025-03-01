@@ -20,6 +20,8 @@ import {
   X,
 } from "lucide-react";
 import CountUp from 'react-countup';
+import { SignInButton } from "@clerk/clerk-react";
+
 
 function LandingPage() {
   // Initialize darkMode state with localStorage or system preference
@@ -112,12 +114,12 @@ function LandingPage() {
               >
                 Pricing
               </a>
-              <a
+              <SignInButton
                 href="#"
                 className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition-colors"
               >
                 Login
-              </a>
+              </SignInButton>
               <button
                 onClick={toggleDarkMode}
                 className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
