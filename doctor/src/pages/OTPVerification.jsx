@@ -183,26 +183,6 @@ const OTPVerification = () => {
       setIsVerifying(false);
     }
   };
-
-  // Handle end session
-  const handleEndSession = async () => {
-    try {
-      const response = await axios.post("https://wwqgb2tx-5000.inc1.devtunnels.ms/api/end-session", {
-        patientUsername: patientUsername,
-      });
-
-      if (response.data.success) {
-        setVerificationStatus(null);
-        setDocuments([]);
-        setOtpValues(["", "", "", "", "", ""]);
-        setPatientUsername("");
-        setSessionInfo(null);
-        setSessionExpiration(null);
-      }
-    } catch (error) {
-      console.error("Error ending session:", error);
-    }
-  };
   
   // Format time for display
   const formatTime = (seconds) => {
@@ -332,13 +312,6 @@ const OTPVerification = () => {
                 </div>
               </div>
 
-              {/* End Session Button */}
-              <button
-                onClick={handleEndSession}
-                className="w-full mt-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors"
-              >
-                End Session
-              </button>
             </>
           ) : (
             <>
