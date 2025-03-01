@@ -72,8 +72,8 @@ const OTPVerification = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 {/* Add the UserButton here with spacing */}
-                <UserButton /> {/* Added mr-4 for spacing */}
-                <div>
+                <UserButton/>
+                <div className="ml-2">
                   <p className="text-sm font-bold text-gray-800">
                     {user.firstName ? `${user.firstName} ${user.lastName || ''}` : user.username || 'User'}
                   </p>
