@@ -68,16 +68,7 @@ const OTPVerification = () => {
             OTP
           </button>
           <button className="w-full py-3 px-4 bg-white text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors border border-gray-200 flex items-center">
-          
-            ADD FILES
-          </button>
-          <button className="w-full py-3 px-4 bg-white text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors border border-gray-200 flex items-center">
-            
-            CHECK INFO
-          </button>
-          <button className="w-full py-3 px-4 bg-white text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors border border-gray-200 flex items-center">
-           
-            CHAT
+          Dashboard
           </button>
         </div>
 
