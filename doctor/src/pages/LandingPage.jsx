@@ -89,7 +89,7 @@ function LandingPage() {
             <div className="flex items-center">
               <Stethoscope className="h-8 w-8 text-blue-600 dark:text-blue-400" />
               <span className="ml-2 text-xl font-semibold text-gray-800 dark:text-white">
-                MediRAG
+                Sevaमित्र
               </span>
             </div>
             <div className="hidden md:flex items-center space-x-8">
@@ -106,22 +106,16 @@ function LandingPage() {
                 How It Works
               </a>
               <a
-                href="#testimonials"
-                className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-              >
-                Testimonials
-              </a>
-              <a
                 href="#pricing"
                 className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               >
                 Pricing
               </a>
               <a
-                href="#contact"
+                href="#"
                 className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition-colors"
               >
-                Contact Us
+                Login
               </a>
               <button
                 onClick={toggleDarkMode}
@@ -185,13 +179,6 @@ function LandingPage() {
                 How It Works
               </a>
               <a
-                href="#testimonials"
-                className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Testimonials
-              </a>
-              <a
                 href="#pricing"
                 className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors py-2"
                 onClick={() => setMobileMenuOpen(false)}
@@ -199,11 +186,11 @@ function LandingPage() {
                 Pricing
               </a>
               <a
-                href="#contact"
+                href="#"
                 className="bg-blue-600 text-white hover:bg-blue-700 transition-colors py-2 px-4 rounded-md text-center"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Contact Us
+                Login
               </a>
             </div>
           </motion.div>
@@ -286,7 +273,7 @@ function LandingPage() {
             </motion.div>
           </div>
           {/* Stats Section */}
-          <section className="py-12 transition-colors duration-200">
+          <section className="py-12 transition-colors duration-200 hidden lg:block">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <div className="text-center">
@@ -659,140 +646,6 @@ function LandingPage() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section
-        id="testimonials"
-        className="py-16 bg-gray-50 dark:bg-gray-800 transition-colors duration-200"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <div className="inline-block px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 text-sm font-medium mb-4">
-              Testimonials
-            </div>
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-              What Healthcare Professionals Say
-            </h2>
-            <p className="mt-4 text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Hear from clinicians who have integrated our RAG system into their
-              practice
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Testimonial 1 */}
-            <div className="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-md border border-gray-100 dark:border-gray-700">
-              <div className="flex items-center mb-6">
-                <img
-                  src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
-                  alt="Dr. Sarah Johnson"
-                  className="w-14 h-14 rounded-full object-cover border-2 border-blue-600 dark:border-blue-400"
-                />
-                <div className="ml-4">
-                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    Dr. Sarah Johnson
-                  </h4>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Cardiologist, Mayo Clinic
-                  </p>
-                </div>
-              </div>
-              <div className="flex mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg
-                    key={i}
-                    className="w-5 h-5 text-yellow-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-              </div>
-              <p className="text-gray-700 dark:text-gray-300 italic">
-                "The RAG system has transformed how I approach complex cardiac
-                cases. Having instant access to the latest research, tailored to
-                my patient's specific condition, has improved my diagnostic
-                accuracy by over 30%."
-              </p>
-            </div>
-
-            {/* Testimonial 2 */}
-            <div className="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-md border border-gray-100 dark:border-gray-700">
-              <div className="flex items-center mb-6">
-                <img
-                  src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
-                  alt="Dr. Michael Chen"
-                  className="w-14 h-14 rounded-full object-cover border-2 border-blue-600 dark:border-blue-400"
-                />
-                <div className="ml-4">
-                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    Dr. Michael Chen
-                  </h4>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Neurologist, Johns Hopkins
-                  </p>
-                </div>
-              </div>
-              <div className="flex mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg
-                    key={i}
-                    className="w-5 h-5 text-yellow-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-              </div>
-              <p className="text-gray-700 dark:text-gray-300 italic">
-                "As a neurologist dealing with rare conditions, this system has
-                been invaluable. It retrieves obscure case studies and research
-                that I would have missed, leading to better treatment plans for
-                my patients."
-              </p>
-            </div>
-
-            {/* Testimonial 3 */}
-            <div className="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-md border border-gray-100 dark:border-gray-700">
-              <div className="flex items-center mb-6">
-                <img
-                  src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80"
-                  alt="Dr. Emily Rodriguez"
-                  className="w-14 h-14 rounded-full object-cover border-2 border-blue-600 dark:border-blue-400"
-                />
-                <div className="ml-4">
-                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    Dr. Emily Rodriguez
-                  </h4>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Pediatrician, Children's Hospital
-                  </p>
-                </div>
-              </div>
-              <div className="flex mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg
-                    key={i}
-                    className="w-5 h-5 text-yellow-400"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-              </div>
-              <p className="text-gray-700 dark:text-gray-300 italic">
-                "The time-saving aspect alone is worth it. What used to take
-                hours of research now takes minutes, allowing me to see more
-                patients while providing better care. The pediatric-specific
-                knowledge base is impressive."
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* CTA Section */}
       <section
         id="contact"
@@ -890,7 +743,7 @@ function LandingPage() {
             <div>
               <div className="flex items-center">
                 <Stethoscope className="h-8 w-8 text-blue-400" />
-                <span className="ml-2 text-xl font-semibold">MediRAG</span>
+                <span className="ml-2 text-xl font-semibold">Sevaमित्र</span>
               </div>
               <p className="mt-4 text-gray-400">
                 Enhancing clinical decision support with advanced AI and
@@ -1050,4 +903,4 @@ function LandingPage() {
   );
 }
 
-export default App;
+export default LandingPage;
