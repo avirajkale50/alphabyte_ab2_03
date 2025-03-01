@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PatientDashboard = () => {
   const { user } = useUser();
@@ -10,6 +12,7 @@ const PatientDashboard = () => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [healthTips, setHealthTips] = useState([]);
+  const [unsavedChanges, setUnsavedChanges] = useState({});
   const navigate = useNavigate();
 
   // Mock appointments data
@@ -34,26 +37,26 @@ const PatientDashboard = () => {
     },
   ];
 
-    const medicalRecords = [
-      {
-        id: 1,
-        type: "Blood Test",
-        doctor: "Dr. Amit Kumar",
-        date: "2023-10-20",
-      },
-      {
-        id: 2,
-        type: "X-Ray",
-        doctor: "Dr. Priya Sharma",
-        date: "2023-10-18",
-      },
-      {
-        id: 3,
-        type: "MRI Scan",
-        doctor: "Dr. Rahul Verma",
-        date: "2023-10-15",
-      },
-    ];
+  const medicalRecords = [
+    {
+      id: 1,
+      type: "Blood Test",
+      doctor: "Dr. Amit Kumar",
+      date: "2023-10-20",
+    },
+    {
+      id: 2,
+      type: "X-Ray",
+      doctor: "Dr. Priya Sharma",
+      date: "2023-10-18",
+    },
+    {
+      id: 3,
+      type: "MRI Scan",
+      doctor: "Dr. Rahul Verma",
+      date: "2023-10-15",
+    },
+  ];
 
   // Fetch health tips
   useEffect(() => {
@@ -84,6 +87,32 @@ const PatientDashboard = () => {
   // Handle OTP page navigation
   const handleShareRecordsClick = () => {
     navigate("/patient-otp");
+  };
+
+  // Handle profile update
+  const handleProfileUpdate = async (updatedProfile) => {
+    try {
+      // Update the unsafeMetadata with the new profile data
+      await user.update({
+        unsafeMetadata: {
+          ...user.unsafeMetadata, // Preserve existing metadata
+          ...updatedProfile, // Add new profile data
+        },
+      });
+
+      // Clear unsaved changes
+      setUnsavedChanges({});
+
+      // Switch back to the "Overview" tab
+      setActiveTab("overview");
+
+      // Show success toast
+      toast.success("Profile updated successfully!");
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      // Show error toast
+      toast.error("Error updating profile");
+    }
   };
 
   // Render dashboard content based on active tab
@@ -131,6 +160,14 @@ const PatientDashboard = () => {
                   </p>
                 </div>
               </div>
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <button
+                  onClick={() => setActiveTab("settings")}
+                  className="text-blue-600 text-sm font-medium hover:text-blue-800 transition-colors"
+                >
+                  Edit Profile
+                </button>
+              </div>
             </div>
 
             {/* Appointments Card */}
@@ -172,7 +209,7 @@ const PatientDashboard = () => {
               </div>
             </div>
 
-          {/* Medical Records Card */}
+            {/* Medical Records Card */}
             <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
               <h3 className="text-lg font-semibold mb-4 text-gray-800 flex items-center">
                 <svg
@@ -240,7 +277,78 @@ const PatientDashboard = () => {
             </div>
           </div>
         );
-      // Add other tab cases as needed
+      case "settings":
+        return (
+          <div className="bg-white p-6 rounded-xl shadow-md">
+            <h3 className="text-lg font-semibold mb-4">Profile Settings</h3>
+            <form className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    value={unsavedChanges.fullName || user?.fullName}
+                    onChange={(e) =>
+                      setUnsavedChanges({
+                        ...unsavedChanges,
+                        fullName: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    value={
+                      unsavedChanges.email ||
+                      user?.emailAddresses[0]?.emailAddress
+                    }
+                    onChange={(e) =>
+                      setUnsavedChanges({
+                        ...unsavedChanges,
+                        email: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Phone
+                  </label>
+                  <input
+                    type="text"
+                    value={
+                      unsavedChanges.phone || user?.phoneNumbers[0]?.phoneNumber
+                    }
+                    onChange={(e) =>
+                      setUnsavedChanges({
+                        ...unsavedChanges,
+                        phone: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+              <div className="pt-4">
+                <button
+                  type="button"
+                  onClick={() => handleProfileUpdate(unsavedChanges)}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        );
       default:
         return <div>Select a tab to view content</div>;
     }
@@ -330,6 +438,7 @@ const PatientDashboard = () => {
         </div>
         {renderTabContent()}
       </main>
+      <ToastContainer />
     </div>
   );
 };
