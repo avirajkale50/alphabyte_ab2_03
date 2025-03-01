@@ -11,9 +11,39 @@ const PatientOTPPage = () => {
   const [linkStatus, setLinkStatus] = useState({ success: false, message: '' });
   const [otpExpiration, setOtpExpiration] = useState(null);
   const [countdown, setCountdown] = useState(30);
-
+  const [activeSession, setActiveSession] = useState(null);
+  
   // Use Clerk's useUser hook to get the authenticated user
   const { user } = useUser();
+
+  // Periodically check for active sessions
+  useEffect(() => {
+    const checkSession = async () => {
+      if (!user?.username) return;
+      
+      try {
+        const response = await axios.get(`http://localhost:5000/api/session-status?patientUsername=${user.username}`);
+        if (response.data.success && response.data.active) {
+          setActiveSession({
+            doctorUsername: response.data.doctor_username,
+            expiresIn: response.data.expires_in
+          });
+        } else if (!response.data.active && activeSession) {
+          setActiveSession(null);
+        }
+      } catch (error) {
+        console.error("Error checking session status:", error);
+      }
+    };
+
+    // Check initially
+    checkSession();
+    
+    // Set up interval to check every 5 seconds
+    const interval = setInterval(checkSession, 5000);
+    
+    return () => clearInterval(interval);
+  }, [user, activeSession]);
 
   // Handle drive link validation
   const handleDriveLinkChange = (e) => {
@@ -44,7 +74,7 @@ const PatientOTPPage = () => {
 
     try {
       const response = await axios.post('http://localhost:5000/api/generate-otp', {
-        patientId: user.id // Use Clerk's user.id as the patient ID
+        patientUsername: user.username // Use Clerk's username instead of ID
       });
       
       if (response.data.success) {
@@ -97,13 +127,14 @@ const PatientOTPPage = () => {
 
     try {
       const response = await axios.post('http://localhost:5000/api/end-session', {
-        patientId: user.id // Use Clerk's user.id as the patient ID
+        patientUsername: user.username
       });
       
       if (response.data.success) {
         setGeneratedOTP(null);
         setShowOTPCard(false);
         setOtpExpiration(null);
+        setActiveSession(null);
       }
     } catch (error) {
       console.error("Error ending session:", error);
@@ -163,7 +194,7 @@ const PatientOTPPage = () => {
             />
             <div className="flex-1">
               <p className="text-sm font-medium text-gray-800">{user?.fullName || "User"}</p>
-              <p className="text-xs text-gray-500">Patient ID: {user?.id || "N/A"}</p>
+              <p className="text-xs text-gray-500">Username: {user?.username || "N/A"}</p>
             </div>
           </div>
         </div>
@@ -171,7 +202,35 @@ const PatientOTPPage = () => {
 
       {/* Main Content */}
       <div className="flex-1 p-6">
-        {showOTPCard && generatedOTP && (
+        {/* Active Session Alert */}
+        {activeSession && (
+          <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-6 rounded-lg shadow-md">
+            <div className="flex items-start">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <h3 className="text-lg font-medium text-green-800">Active Session</h3>
+                <div className="mt-2 text-sm text-green-700">
+                  <p>Dr. {activeSession.doctorUsername} is currently accessing your medical records.</p>
+                  <p className="mt-1">Session expires in {Math.floor(activeSession.expiresIn / 60)} minutes and {activeSession.expiresIn % 60} seconds.</p>
+                </div>
+                <div className="mt-4">
+                  <button
+                    onClick={handleExpireSession}
+                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium"
+                  >
+                    End Session Now
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {showOTPCard && generatedOTP && !activeSession && (
           <div className="bg-white rounded-xl shadow-lg p-6 max-w-2xl mx-auto">
             <div className="text-center mb-6">
               <h2 className="text-2xl font-bold text-gray-800 mb-2">Generated OTP</h2>
@@ -246,6 +305,24 @@ const PatientOTPPage = () => {
                 </p>
               </div>
             )}
+          </div>
+        )}
+
+        {!showOTPCard && !activeSession && (
+          <div className="flex items-center justify-center h-full">
+            <div className="text-center p-8 bg-white rounded-lg shadow-md max-w-md">
+              <svg className="w-16 h-16 mx-auto text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              <h3 className="mt-4 text-xl font-bold text-gray-900">Secure Access Control</h3>
+              <p className="mt-2 text-gray-600">Generate a one-time password (OTP) to allow a healthcare professional temporary access to your medical records.</p>
+              <button 
+                onClick={handleGenerateOTP}
+                className="mt-4 w-full py-2 px-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-sm"
+              >
+                Generate OTP
+              </button>
+            </div>
           </div>
         )}
       </div>

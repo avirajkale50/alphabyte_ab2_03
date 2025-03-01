@@ -15,16 +15,16 @@ redis_client = redis.Redis(host='localhost', port=6379, db=0, decode_responses=T
 @app.route('/api/generate-otp', methods=['POST'])
 def generate_otp():
     data = request.json
-    patient_identifier = data.get('patientIdentifier')
+    patient_username = data.get('patientUsername')
     
-    if not patient_identifier:
-        return jsonify({"success": False, "message": "Patient identifier is required"}), 400
+    if not patient_username:
+        return jsonify({"success": False, "message": "Patient username is required"}), 400
     
     # Generate 6-digit OTP
     otp = ''.join(random.choices(string.digits, k=6))
     
     # Store OTP in Redis with 30-second expiration
-    otp_key = f"otp:{patient_identifier}"
+    otp_key = f"otp:{patient_username}"
     redis_client.setex(otp_key, 30, otp)
     
     return jsonify({
@@ -36,15 +36,15 @@ def generate_otp():
 @app.route('/api/verify-otp', methods=['POST'])
 def verify_otp():
     data = request.json
-    patient_identifier = data.get('patientIdentifier')
-    doctor_identifier = data.get('doctorIdentifier')
+    patient_username = data.get('patientUsername')
+    doctor_username = data.get('doctorUsername')
     submitted_otp = data.get('otp')
     
-    if not all([patient_identifier, doctor_identifier, submitted_otp]):
+    if not all([patient_username, doctor_username, submitted_otp]):
         return jsonify({"success": False, "message": "Missing required fields"}), 400
     
     # Get OTP from Redis
-    otp_key = f"otp:{patient_identifier}"
+    otp_key = f"otp:{patient_username}"
     stored_otp = redis_client.get(otp_key)
     
     if not stored_otp:
@@ -57,18 +57,18 @@ def verify_otp():
     redis_client.delete(otp_key)
     
     # Create session (1 hour)
-    session_key = f"session:{patient_identifier}"
+    session_key = f"session:{patient_username}"
     session_data = json.dumps({
-        'doctor_identifier': doctor_identifier,
+        'doctor_username': doctor_username,
         'created_at': datetime.now().isoformat(),
         'expires_at': (datetime.now() + timedelta(hours=1)).isoformat()
     })
     redis_client.setex(session_key, 3600, session_data)
     
     # Log this access for audit trail
-    access_log_key = f"access_log:{patient_identifier}"
+    access_log_key = f"access_log:{patient_username}"
     access_log = {
-        'doctor_identifier': doctor_identifier,
+        'doctor_username': doctor_username,
         'timestamp': datetime.now().isoformat(),
         'action': 'access_granted'
     }
@@ -90,15 +90,14 @@ def verify_otp():
         "session_expires_in": 3600
     })
 
-# Update the session status endpoint too
 @app.route('/api/session-status', methods=['GET'])
 def session_status():
-    patient_identifier = request.args.get('patientIdentifier')
+    patient_username = request.args.get('patientUsername')
     
-    if not patient_identifier:
-        return jsonify({"success": False, "message": "Patient identifier is required"}), 400
+    if not patient_username:
+        return jsonify({"success": False, "message": "Patient username is required"}), 400
     
-    session_key = f"session:{patient_identifier}"
+    session_key = f"session:{patient_username}"
     if redis_client.exists(session_key):
         session_data = redis_client.get(session_key)
         session_info = json.loads(session_data)
@@ -107,7 +106,7 @@ def session_status():
         return jsonify({
             "success": True,
             "active": True,
-            "doctor_identifier": session_info.get('doctor_identifier'),
+            "doctor_username": session_info.get('doctor_username'),
             "expires_in": ttl
         })
     
@@ -116,25 +115,24 @@ def session_status():
         "active": False
     })
 
-# Update end session endpoint
 @app.route('/api/end-session', methods=['POST'])
 def end_session():
     data = request.json
-    patient_identifier = data.get('patientIdentifier')
+    patient_username = data.get('patientUsername')
     
-    if not patient_identifier:
-        return jsonify({"success": False, "message": "Patient identifier is required"}), 400
+    if not patient_username:
+        return jsonify({"success": False, "message": "Patient username is required"}), 400
     
-    session_key = f"session:{patient_identifier}"
+    session_key = f"session:{patient_username}"
     if redis_client.exists(session_key):
         # Get session data for logging
         session_data = redis_client.get(session_key)
         session_info = json.loads(session_data)
         
         # Log session end for audit
-        access_log_key = f"access_log:{patient_identifier}"
+        access_log_key = f"access_log:{patient_username}"
         access_log = {
-            'doctor_identifier': session_info.get('doctor_identifier', 'unknown'),
+            'doctor_username': session_info.get('doctor_username', 'unknown'),
             'timestamp': datetime.now().isoformat(),
             'action': 'session_ended'
         }
@@ -145,3 +143,6 @@ def end_session():
         return jsonify({"success": True, "message": "Session ended successfully"})
     
     return jsonify({"success": False, "message": "No active session found"}), 404
+
+if __name__ == "__main__":
+    app.run(debug=True)
