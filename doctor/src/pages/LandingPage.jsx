@@ -516,7 +516,7 @@ function LandingPage() {
               </h3>
               <div className="mb-6">
                 <span className="text-4xl font-bold text-gray-900 dark:text-white">
-                  $499
+                  ₹499
                 </span>
                 <span className="text-gray-600 dark:text-gray-300">/month</span>
               </div>
@@ -559,7 +559,7 @@ function LandingPage() {
               </h3>
               <div className="mb-6">
                 <span className="text-4xl font-bold text-gray-900 dark:text-white">
-                  $1,299
+                  ₹1,299
                 </span>
                 <span className="text-gray-600 dark:text-gray-300">/month</span>
               </div>
