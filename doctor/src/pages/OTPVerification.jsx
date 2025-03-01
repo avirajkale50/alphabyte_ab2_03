@@ -6,10 +6,11 @@ const OTPVerification = () => {
 
   // Handle OTP input changes
   const handleOtpChange = (index, value) => {
-    if (isNaN(value)) return;
-
+    // Remove the isNaN check to allow alphanumeric characters
+    
     const newOtpValues = [...otpValues];
-    newOtpValues[index] = value;
+    // Convert to uppercase for better readability
+    newOtpValues[index] = value
     setOtpValues(newOtpValues);
 
     // Move to next input if current input is filled
@@ -32,8 +33,9 @@ const OTPVerification = () => {
 
     const newOtpValues = [...otpValues];
     pastedData.forEach((value, index) => {
-      if (index < 6 && !isNaN(value)) {
-        newOtpValues[index] = value;
+      if (index < 6) {
+        // Allow any character, convert to uppercase
+        newOtpValues[index] = value.toUpperCase();
       }
     });
 
