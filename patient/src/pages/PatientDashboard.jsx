@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "@clerk/clerk-react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
 const PatientDashboard = () => {
+  const { user } = useUser();
   const [activeTab, setActiveTab] = useState("overview");
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -32,40 +34,26 @@ const PatientDashboard = () => {
     },
   ];
 
-  // Mock patient profile
-  const [patientProfile] = useState({
-    name: "Rahul Verma",
-    id: "PAT-12345",
-    age: 35,
-    bloodGroup: "B+",
-    email: "rahul.verma@example.com",
-    phone: "+91 98765 43210",
-    address: "123, Park Street, Mumbai",
-    lastCheckup: "2023-09-15",
-    upcomingTests: 2,
-    pendingReports: 1,
-    medicationAdherence: "85%"
-  });
-
-  // Mock medical records
-  const medicalRecords = [
-    {
-      id: 1,
-      date: "2023-09-15",
-      type: "Blood Test",
-      doctor: "Dr. Amit Kumar",
-      status: "Completed",
-      report: "link-to-report"
-    },
-    {
-      id: 2,
-      date: "2023-08-20",
-      type: "X-Ray",
-      doctor: "Dr. Suresh Patel",
-      status: "Completed",
-      report: "link-to-report"
-    }
-  ];
+    const medicalRecords = [
+      {
+        id: 1,
+        type: "Blood Test",
+        doctor: "Dr. Amit Kumar",
+        date: "2023-10-20",
+      },
+      {
+        id: 2,
+        type: "X-Ray",
+        doctor: "Dr. Priya Sharma",
+        date: "2023-10-18",
+      },
+      {
+        id: 3,
+        type: "MRI Scan",
+        doctor: "Dr. Rahul Verma",
+        date: "2023-10-15",
+      },
+    ];
 
   // Fetch health tips
   useEffect(() => {
@@ -124,18 +112,23 @@ const PatientDashboard = () => {
               <div className="mb-4">
                 <div className="flex items-center mb-3">
                   <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl mr-4">
-                    {patientProfile.name.split(' ').map(n => n[0]).join('')}
+                    {user?.firstName?.charAt(0)}
+                    {user?.lastName?.charAt(0)}
                   </div>
                   <div>
-                    <h4 className="font-semibold text-lg">{patientProfile.name}</h4>
-                    <p className="text-blue-600">Patient ID: {patientProfile.id}</p>
+                    <h4 className="font-semibold text-lg">{user?.fullName}</h4>
+                    <p className="text-blue-600">Patient ID: {user?.id}</p>
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-sm">
-                  <p className="text-gray-600"><span className="font-medium">Age:</span> {patientProfile.age}</p>
-                  <p className="text-gray-600"><span className="font-medium">Blood Group:</span> {patientProfile.bloodGroup}</p>
-                  <p className="text-gray-600"><span className="font-medium">Email:</span> {patientProfile.email}</p>
-                  <p className="text-gray-600"><span className="font-medium">Phone:</span> {patientProfile.phone}</p>
+                  <p className="text-gray-600">
+                    <span className="font-medium">Email:</span>{" "}
+                    {user?.emailAddresses[0]?.emailAddress}
+                  </p>
+                  <p className="text-gray-600">
+                    <span className="font-medium">Phone:</span>{" "}
+                    {user?.phoneNumbers[0]?.phoneNumber}
+                  </p>
                 </div>
               </div>
             </div>
@@ -162,13 +155,16 @@ const PatientDashboard = () => {
                   <div key={appointment.id} className="py-3">
                     <p className="font-medium">{appointment.doctor}</p>
                     <p className="text-sm text-gray-500">
-                      {appointment.specialty} • {appointment.time} • {appointment.date}
+                      {appointment.specialty} • {appointment.time} •{" "}
+                      {appointment.date}
                     </p>
-                    <span className={`mt-1 inline-block px-2 py-0.5 rounded-full text-xs font-medium ${
-                      appointment.status === "Confirmed"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-yellow-100 text-yellow-800"
-                    }`}>
+                    <span
+                      className={`mt-1 inline-block px-2 py-0.5 rounded-full text-xs font-medium ${
+                        appointment.status === "Confirmed"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-yellow-100 text-yellow-800"
+                      }`}
+                    >
                       {appointment.status}
                     </span>
                   </div>
@@ -176,7 +172,7 @@ const PatientDashboard = () => {
               </div>
             </div>
 
-            {/* Medical Records Card */}
+          {/* Medical Records Card */}
             <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
               <h3 className="text-lg font-semibold mb-4 text-gray-800 flex items-center">
                 <svg
@@ -186,7 +182,11 @@ const PatientDashboard = () => {
                   fill="currentColor"
                 >
                   <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                  <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
+                  <path
+                    fillRule="evenodd"
+                    d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
+                    clipRule="evenodd"
+                  />
                 </svg>
                 Recent Medical Records
               </h3>
@@ -220,7 +220,11 @@ const PatientDashboard = () => {
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >
-                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                  <path
+                    fillRule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                    clipRule="evenodd"
+                  />
                 </svg>
                 Health Tips & Advisories
               </h3>
@@ -300,7 +304,9 @@ const PatientDashboard = () => {
       {/* Main Content */}
       <main className="container mx-auto px-6 py-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-800">Patient Dashboard</h1>
+          <h1 className="text-2xl font-bold text-gray-800">
+            Patient Dashboard
+          </h1>
           <button
             onClick={handleShareRecordsClick}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
