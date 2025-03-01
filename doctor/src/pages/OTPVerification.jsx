@@ -220,7 +220,7 @@ const OTPVerification = () => {
           <h2 className="text-xl font-bold text-gray-800">
             SEWA<span className="text-blue-700 ml-1">मित्र</span>
           </h2>
-          <p className="text-sm text-gray-600 mt-1">Patient Portal</p>
+          <p className="text-sm text-gray-600 mt-1">Doctor Portal</p>
         </div>
 
         <div className="flex-1 space-y-4">
@@ -228,9 +228,11 @@ const OTPVerification = () => {
             OTP Verification
           </button>
 
-          <button className="w-full py-3 px-4 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors border border-gray-200 flex items-center justify-center">
-            Dashboard
-          </button>
+          <a href="/dashboard">
+            <button className="w-full py-3 px-4 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors border border-gray-200 flex items-center justify-center cursor-pointer">
+              Dashboard
+            </button>
+          </a>
         </div>
 
         {/* Profile Section */}
@@ -340,8 +342,8 @@ const OTPVerification = () => {
             </>
           ) : (
             <>
-              <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">
-                OTP VERIFICATION
+              <h2 className="text-2xl font-bold text-center text-gray-800 mb-2 cursor-pointer">
+                  OTP VERIFICATION
               </h2>
               <p className="text-center text-gray-500 mb-6">
                 Enter the Patient Username and OTP to access records

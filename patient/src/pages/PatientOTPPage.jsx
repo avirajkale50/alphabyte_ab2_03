@@ -4,8 +4,6 @@ import { useUser } from "@clerk/clerk-react"; // Import Clerk's useUser hook
 import DriveButton from "./DriveButton";
 
 const PatientOTPPage = () => {
-  const [driveLink, setDriveLink] = useState("");
-  const [isLinkValid, setIsLinkValid] = useState(false);
   const [generatedOTP, setGeneratedOTP] = useState(null);
   const [showOTPCard, setShowOTPCard] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
