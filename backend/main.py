@@ -1,5 +1,5 @@
-from fastapi import FastAPI, HTTPException, Header
-from fastapi.middleware.cors import CORSMiddleware
+from flask import Flask, request, jsonify, make_response
+from flask_cors import CORS
 from pydantic import BaseModel
 from typing import Optional
 import os
@@ -13,16 +13,10 @@ from googleapiclient.errors import HttpError
 import traceback
 import io
 
-app = FastAPI()
+app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
+# Constants
 CACHE_DIR = Path("cache")
 DATA_DIR = Path("data")
 UPLOADS_DIR = DATA_DIR / "uploads"
@@ -36,10 +30,12 @@ GOOGLE_MIME_TYPES = {
     'application/vnd.google-apps.drawing': ('application/pdf', '.pdf'),
 }
 
+# Pydantic model for request validation
 class DriveRequest(BaseModel):
     folder_id: str
     credentials: Optional[dict] = None
 
+# Helper functions
 def download_regular_file(service, file_id: str, folder_path: str, file_name: str) -> str:
     try:
         print(f"Downloading regular file: {file_name} (ID: {file_id})")
@@ -135,14 +131,13 @@ def download_folder_contents(service, folder_id: str, folder_path: str):
     except Exception as e:
         print(f"Error processing folder contents: {str(e)}")
 
-@app.post("/api/drive/download-folder")
-async def download_folder(
-    request: DriveRequest,
-    authorization: str = Header(None)
-):
+# Routes
+@app.route("/api/drive/download-folder", methods=["POST"])
+def download_folder():
     try:
+        authorization = request.headers.get("Authorization")
         if not authorization:
-            raise HTTPException(status_code=401, detail="No authorization token provided")
+            return jsonify({"error": "No authorization token provided"}), 401
         
         token = authorization.replace("Bearer ", "")
         
@@ -154,37 +149,41 @@ async def download_folder(
         service = build('drive', 'v3', credentials=creds)
         print("Google Drive service initialized.")
 
-        folder_name = get_folder_name(service, request.folder_id)
+        data = request.get_json()
+        folder_id = data.get("folder_id")
+        if not folder_id:
+            return jsonify({"error": "Folder ID is required"}), 400
+
+        folder_name = get_folder_name(service, folder_id)
         folder_path = UPLOADS_DIR / folder_name
         folder_path.mkdir(parents=True, exist_ok=True)
         print(f"Created folder path: {folder_path}")
 
-        download_folder_contents(service, request.folder_id, str(folder_path))
+        download_folder_contents(service, folder_id, str(folder_path))
         
-        return {
+        return jsonify({
             "status": "success",
             "message": "Folder downloaded successfully",
             "folder_path": str(folder_path)
-        }
+        })
 
     except HttpError as error:
         error_message = f"Google API error: {str(error)}"
         print(error_message)
         print("Stacktrace:")
         traceback.print_exc()
-        raise HTTPException(status_code=500, detail=error_message)
+        return jsonify({"error": error_message}), 500
     
     except Exception as e:
         error_message = f"An unexpected error occurred: {str(e)}"
         print(error_message)
         print("Stacktrace:")
         traceback.print_exc()
-        raise HTTPException(status_code=500, detail=error_message)
+        return jsonify({"error": error_message}), 500
 
-@app.get("/api/health")
-async def health_check():
-    return {"status": "ok"}
+@app.route("/api/health", methods=["GET"])
+def health_check():
+    return jsonify({"status": "ok"})
 
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    app.run(host="0.0.0.0", port=8000)
