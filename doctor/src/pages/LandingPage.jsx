@@ -19,6 +19,7 @@ import {
   Menu,
   X,
 } from "lucide-react";
+import CountUp from 'react-countup';
 
 function LandingPage() {
   // Initialize darkMode state with localStorage or system preference
@@ -276,37 +277,48 @@ function LandingPage() {
           <section className="py-12 transition-colors duration-200 hidden lg:block">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                <div className="text-center">
-                  <p className="text-4xl md:text-5xl font-bold text-blue-600 dark:text-blue-400">
-                    98%
-                  </p>
-                  <p className="mt-2 text-gray-600 dark:text-gray-300">
-                    Accuracy Rate
-                  </p>
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                  <div className="text-center">
+                    <p className="text-4xl md:text-5xl font-bold text-blue-400">
+                      <CountUp end={98} duration={2.5} suffix="%" />
+                    </p>
+                    <p className="mt-2 text-gray-300">
+                      Accuracy Rate
+                    </p>
+                  </div>
                 </div>
-                <div className="text-center">
-                  <p className="text-4xl md:text-5xl font-bold text-blue-600 dark:text-blue-400">
-                    500+
-                  </p>
-                  <p className="mt-2 text-gray-600 dark:text-gray-300">
-                    Medical Institutions
-                  </p>
+
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                  <div className="text-center">
+                    <p className="text-4xl md:text-5xl font-bold text-blue-400">
+                      <CountUp end={500} duration={2.5} suffix="+" />
+                    </p>
+                    <p className="mt-2 text-gray-300">
+                      Medical Institutions
+                    </p>
+                  </div>
                 </div>
-                <div className="text-center">
-                  <p className="text-4xl md:text-5xl font-bold text-blue-600 dark:text-blue-400">
-                    30M+
-                  </p>
-                  <p className="mt-2 text-gray-600 dark:text-gray-300">
-                    Patient Records
-                  </p>
+
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                  <div className="text-center">
+                    <p className="text-4xl md:text-5xl font-bold text-blue-400">
+                      <CountUp end={30} duration={2.5} suffix="M+" />
+                    </p>
+                    <p className="mt-2 text-gray-300">
+                      Patient Records
+                    </p>
+                  </div>
                 </div>
-                <div className="text-center">
-                  <p className="text-4xl md:text-5xl font-bold text-blue-600 dark:text-blue-400">
-                    45%
-                  </p>
-                  <p className="mt-2 text-gray-600 dark:text-gray-300">
-                    Time Saved
-                  </p>
+
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                  <div className="text-center">
+                    <p className="text-4xl md:text-5xl font-bold text-blue-400">
+                      <CountUp end={45} duration={2.5} suffix="%" />
+                    </p>
+                    <p className="mt-2 text-gray-300">
+                      Time Saved
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
