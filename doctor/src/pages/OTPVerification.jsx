@@ -215,18 +215,20 @@ const OTPVerification = () => {
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-gradient-to-b from-blue-50 to-blue-100">
       {/* Sidebar */}
-      <div className="w-full md:w-64 bg-white shadow-xl py-8 px-6 flex flex-col border-r border-gray-100">
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold text-blue-700">
-            SEWA<span className="text-blue-700 text-2xl ml-1">मित्र</span>
+      <div className="w-80 bg-white shadow-lg p-6 flex flex-col rounded-lg border border-gray-200">
+        <div className="text-center mb-6">
+          <h2 className="text-xl font-bold text-gray-800">
+            SEWA<span className="text-blue-700 ml-1">मित्र</span>
           </h2>
+          <p className="text-sm text-gray-600 mt-1">Patient Portal</p>
         </div>
 
-        <div className="space-y-3 flex-1">
-          <button className="w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-sm flex items-center">
+        <div className="flex-1 space-y-4">
+          <button className="w-full py-3 px-4 bg-blue-600 text-white rounded-lg text-base font-medium hover:bg-blue-700 transition-colors shadow-sm">
             OTP Verification
           </button>
-          <button className="w-full py-3 px-4 bg-white text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors border border-gray-200 flex items-center">
+
+          <button className="w-full py-3 px-4 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors border border-gray-200 flex items-center justify-center">
             Dashboard
           </button>
         </div>
@@ -234,24 +236,20 @@ const OTPVerification = () => {
         {/* Profile Section */}
         <div className="mt-auto pt-6 border-t border-gray-200">
           {isLoaded && user ? (
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <UserButton />
-                <div className="ml-2">
-                  <p className="text-sm font-bold text-gray-800">
-                    {user.firstName
-                      ? `${user.firstName} ${user.lastName || ""}`
-                      : user.username || "User"}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {user.publicMetadata?.role || "Medical Professional"}
-                  </p>
-                </div>
+            <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
+              <img 
+                src={user.imageUrl || "https://ui-avatars.com/api/?name=User&background=0D8ABC&color=fff"} 
+                alt={user.firstName || "User"} 
+                className="h-10 w-10 rounded-full border-2 border-blue-500"
+              />
+              <div className="flex-1">
+                <p className="text-sm font-medium text-gray-800">{user.firstName ? `${user.firstName} ${user.lastName || ""}` : user.username || "User"}</p>
+                <p className="text-xs text-gray-500">{user.publicMetadata?.role || "Medical Professional"}</p>
               </div>
             </div>
           ) : (
-            <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full bg-blue-100 border-2 border-blue-500 flex items-center justify-center text-blue-600 mr-3 shadow-sm">
+            <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+              <div className="w-10 h-10 rounded-full bg-blue-100 border-2 border-blue-500 flex items-center justify-center text-blue-600 shadow-sm">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6"
@@ -266,13 +264,14 @@ const OTPVerification = () => {
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-bold text-gray-800">Loading...</p>
+                <p className="text-sm font-medium text-gray-800">Loading...</p>
                 <p className="text-xs text-gray-500">Please wait</p>
               </div>
             </div>
           )}
         </div>
       </div>
+
 
       {/* Main Content */}
       <div className="flex-1 flex items-center justify-center p-4 md:p-8">
