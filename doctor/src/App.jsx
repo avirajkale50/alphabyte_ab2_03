@@ -1,76 +1,86 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import { 
- ClerkProvider, 
- SignedIn, 
- SignedOut, 
- SignInButton, 
- UserButton,
- RedirectToSignIn
+  ClerkProvider, 
+  SignedIn, 
+  SignedOut, 
+  SignInButton, 
+  UserButton
 } from "@clerk/clerk-react";
-import { ClerkLoaded, ClerkLoading } from "@clerk/clerk-react";
 import LandingPage from "./pages/LandingPage";
 import OTPVerification from "./pages/OTPVerification";
 import ReportsQuestionPage from "./pages/ReportsQuestionPage";
 import DoctorDashboard from "./pages/DoctorDashboard";
 
 const App = () => {
- // Replace with your actual Clerk publishable key
- const clerkPubKey = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
+  // Replace with your actual Clerk publishable key
+  const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
- return (
-   <ClerkProvider publishableKey={clerkPubKey}>
-     <Router>
-       <header>
-         <SignedOut>
-           <SignInButton />
-         </SignedOut>
-         <SignedIn>
-           <UserButton />
-         </SignedIn>
-       </header>
-       <ClerkLoading>
-         <div>Loading...</div>
-       </ClerkLoading>
-       <ClerkLoaded>
-         <Routes>
-           <Route path="/" element={<LandingPage />} />
-           
-           {/* Protected routes */}
-           <Route
-             path="/otp"
-             element={
-               <>
-                 <SignedIn>
-                   <OTPVerification />
-                 </SignedIn>
-                 <SignedOut>
-                   <Navigate to="/dashboard" replace />
-                 </SignedOut>
-               </>
-             }
-           />
-           
-           <Route
-             path="/chat"
-             element={
-               <>
-                 <SignedIn>
-                   <ReportsQuestionPage />
-                 </SignedIn>
-                 <SignedOut>
-                   <Navigate to="/dashboard" replace />
-                 </SignedOut>
-               </>
-             }
-           />
-           
-           <Route path="/dashboard" element={<DoctorDashboard />} />
-         </Routes>
-       </ClerkLoaded>
-     </Router>
-   </ClerkProvider>
- );
+  return (
+    <ClerkProvider publishableKey={clerkPubKey}>
+      <Router>
+        <Routes>
+          {/* Root route - Redirect to /dashboard if signed in, else show LandingPage */}
+          <Route
+            path="/"
+            element={
+              <>
+                <SignedIn>
+                  <Navigate to="/dashboard" />
+                </SignedIn>
+                <SignedOut>
+                  <LandingPage />
+                </SignedOut>
+              </>
+            }
+          />
+          
+          {/* Protected routes */}
+          <Route
+            path="/otp"
+            element={
+              <>
+                <SignedIn>
+                  <OTPVerification />
+                </SignedIn>
+                <SignedOut>
+                  <Navigate to="/" />
+                </SignedOut>
+              </>
+            }
+          />
+          
+          <Route
+            path="/chat"
+            element={
+              <>
+                <SignedIn>
+                  <ReportsQuestionPage />
+                </SignedIn>
+                <SignedOut> 
+                  <Navigate to="/" />
+                </SignedOut>
+              </>
+            }
+          />
+          
+          <Route
+            path="/dashboard"
+            element={
+              <>
+                <SignedIn>
+                  <DoctorDashboard />
+                </SignedIn>
+                <SignedOut> 
+                  <Navigate to="/" />
+                </SignedOut>
+              </>
+            }
+          />
+        </Routes>
+      </Router>
+    </ClerkProvider>
+  );
 };
 
 export default App;
