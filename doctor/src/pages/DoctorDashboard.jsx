@@ -4,6 +4,8 @@ import { UserButton } from "@clerk/clerk-react"; // Import UserButton for profil
 import { useNavigate } from "react-router-dom"; // Import useNavigate for routing
 import Calendar from "react-calendar"; // Import a calendar component
 import "react-calendar/dist/Calendar.css"; // Calendar styles
+import { ToastContainer, toast } from 'react-toastify'; // Import react-toastify components
+import 'react-toastify/dist/ReactToastify.css'; // Import react-toastify styles
 
 const DoctorDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -145,10 +147,20 @@ const DoctorDashboard = () => {
   
       // Clear unsaved changes
       setUnsavedChanges({});
-  
+
+      // Switch back to the "Overview" tab
+      setActiveTab("overview");
+
+      // Show success toast
+      toast.success("Profile updated successfully!");
+
       console.log("Profile updated successfully!");
     } catch (error) {
       console.error("Error updating profile:", error);
+      // Show error toast
+      toast.error("Error updating profile");
+  
+      console.log("Profile updated successfully!");
     }
   };
 
@@ -609,6 +621,9 @@ const DoctorDashboard = () => {
 
       {/* Calendar Modal */}
       {isCalendarOpen && <CalendarModal />}
+
+      {/* Toast Container */}
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
     </div>
   );
 };
