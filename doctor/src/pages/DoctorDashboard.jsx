@@ -64,8 +64,8 @@ const DoctorDashboard = () => {
     id: user?.id || "DOC-23456",
     email: user?.primaryEmailAddress?.emailAddress || "Email Here",
     phone: user?.phoneNumbers?.[0]?.phoneNumber || "Phone Number Here",
-    hospitalName: "Sewa Medical Center", // Can be extended with custom metadata
-    experience: "15 years", // Can be extended with custom metadata
+    hospitalName: "Add Your Hospital", // Can be extended with custom metadata
+    experience: "Add Your Experience", // Can be extended with custom metadata
     patients: 1243,
     consultations: 5678,
     rating: 4.8,
