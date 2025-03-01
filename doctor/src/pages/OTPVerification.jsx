@@ -23,7 +23,7 @@ const OTPVerification = () => {
       if (!sessionInfo) return;
       
       try {
-        const response = await axios.get(`http://localhost:5000/api/session-status?patientUsername=${sessionInfo.patientUsername}`);
+        const response = await axios.get(`https://wwqgb2tx-5000.inc1.devtunnels.ms/api/session-status?patientUsername=${sessionInfo.patientUsername}`);
         if (!response.data.active) {
           // Session has been ended by the patient, refresh page
           setVerificationStatus(null);
@@ -144,7 +144,7 @@ const OTPVerification = () => {
     setIsVerifying(true);
 
     try {
-      const response = await axios.post("http://localhost:5000/api/verify-otp", {
+      const response = await axios.post("https://wwqgb2tx-5000.inc1.devtunnels.ms/api/verify-otp", {
         patientUsername: patientUsername,
         doctorUsername: user?.username, // Use Clerk username
         otp: otp,
@@ -187,7 +187,7 @@ const OTPVerification = () => {
   // Handle end session
   const handleEndSession = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/api/end-session", {
+      const response = await axios.post("https://wwqgb2tx-5000.inc1.devtunnels.ms/api/end-session", {
         patientUsername: patientUsername,
       });
 

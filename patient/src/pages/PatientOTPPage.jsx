@@ -22,7 +22,7 @@ const PatientOTPPage = () => {
       if (!user?.username) return;
       
       try {
-        const response = await axios.get(`http://localhost:5000/api/session-status?patientUsername=${user.username}`);
+        const response = await axios.get(`https://wwqgb2tx-5000.inc1.devtunnels.ms/api/session-status?patientUsername=${user.username}`);
         if (response.data.success && response.data.active) {
           setActiveSession({
             doctorUsername: response.data.doctor_username,
@@ -73,7 +73,7 @@ const PatientOTPPage = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/generate-otp', {
+      const response = await axios.post('https://wwqgb2tx-5000.inc1.devtunnels.ms/api/generate-otp', {
         patientUsername: user.username // Use Clerk's username instead of ID
       });
       
@@ -126,7 +126,7 @@ const PatientOTPPage = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/end-session', {
+      const response = await axios.post('https://wwqgb2tx-5000.inc1.devtunnels.ms/api/end-session', {
         patientUsername: user.username
       });
       
