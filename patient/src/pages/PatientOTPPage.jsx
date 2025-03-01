@@ -114,13 +114,6 @@ const PatientOTPPage = () => {
           </button>
 
           <div className="space-y-3">
-            <input
-              type="text"
-              value={driveLink}
-              onChange={handleDriveLinkChange}
-              placeholder="Enter Google Drive Link"
-              className="w-full py-2 px-4 bg-white text-gray-700 rounded-lg text-sm font-medium border border-gray-200 focus:outline-none focus:border-blue-500"
-            />
             <button
               onClick={handleFolderSelect}
               className="w-full py-2 px-4 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors border border-gray-200 flex items-center justify-center"
