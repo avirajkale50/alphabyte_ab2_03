@@ -1,29 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useUser } from "@clerk/clerk-react"; // Import Clerk's useUser hook
+import { UserButton } from "@clerk/clerk-react"; // Import UserButton for profile management
+import { useNavigate } from "react-router-dom"; // Import useNavigate for routing
+import Calendar from "react-calendar"; // Import a calendar component
+import "react-calendar/dist/Calendar.css"; // Calendar styles
 
 const DoctorDashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false); // State for calendar modal
+  const [selectedDate, setSelectedDate] = useState(new Date()); // Selected date for calendar
+  const [latestNews, setLatestNews] = useState([]); // State for latest medical news
+  const { user } = useUser(); // Get authenticated user data from Clerk
+  const navigate = useNavigate(); // Hook for navigation
 
-  // Mock data for the doctor profile
-  const doctorProfile = {
-    name: "Dr. John Doe",
-    specialty: "Cardiologist",
-    id: "DOC-23456",
-    email: "john.doe@sewamitr.org",
-    phone: "+91 98765 43210",
-    hospitalName: "Sewa Medical Center",
-    experience: "15 years",
-    patients: 1243,
-    consultations: 5678,
-    rating: 4.8,
-  };
-
-  // Mock data for appointments
+  // Mock data for appointments (replace with actual API data)
   const upcomingAppointments = [
     {
       id: 1,
       patient: "Amit Kumar",
       time: "10:30 AM",
-      date: "Today",
+      date: "2023-10-25",
       type: "Follow-up",
       status: "Confirmed",
     },
@@ -31,7 +27,7 @@ const DoctorDashboard = () => {
       id: 2,
       patient: "Priya Sharma",
       time: "11:45 AM",
-      date: "Today",
+      date: "2023-10-25",
       type: "Consultation",
       status: "Waiting",
     },
@@ -39,44 +35,94 @@ const DoctorDashboard = () => {
       id: 3,
       patient: "Rahul Verma",
       time: "2:15 PM",
-      date: "Today",
+      date: "2023-10-25",
       type: "Emergency",
       status: "Confirmed",
     },
     {
       id: 4,
-      patient: "Sneha Patel",
-      time: "9:00 AM",
-      date: "Tomorrow",
-      type: "Regular Checkup",
+      patient: "Neha Gupta",
+      time: "9:15 AM",
+      date: "2023-10-26",
+      type: "Initial Consultation",
       status: "Confirmed",
+    },
+    {
+      id: 5,
+      patient: "Suresh Patel",
+      time: "3:30 PM",
+      date: "2023-10-26",
+      type: "Follow-up",
+      status: "Waiting",
     },
   ];
 
-  // Mock data for recent patient reports
-  const recentReports = [
-    {
-      id: 1,
-      patient: "Amit Kumar",
-      reportType: "Blood Test",
-      date: "Mar 01, 2025",
-      status: "Reviewed",
-    },
-    {
-      id: 2,
-      patient: "Priya Sharma",
-      reportType: "ECG",
-      date: "Feb 28, 2025",
-      status: "Pending Review",
-    },
-    {
-      id: 3,
-      patient: "Rahul Verma",
-      reportType: "CT Scan",
-      date: "Feb 27, 2025",
-      status: "Reviewed",
-    },
-  ];
+  // Doctor profile data (fetched from Clerk)
+  const [doctorProfile, setDoctorProfile] = useState({
+    name: user?.fullName || "Dr. John Doe",
+    specialty: "Cardiologist", // Can be extended with custom metadata
+    id: user?.id || "DOC-23456",
+    email: user?.primaryEmailAddress?.emailAddress || "john.doe@sewamitr.org",
+    phone: user?.phoneNumbers?.[0]?.phoneNumber || "+91 98765 43210",
+    hospitalName: "Sewa Medical Center", // Can be extended with custom metadata
+    experience: "15 years", // Can be extended with custom metadata
+    patients: 1243,
+    consultations: 5678,
+    rating: 4.8,
+  });
+
+  // Fetch latest news related to doctor's specialty
+  useEffect(() => {
+    // Mock news API call - replace with actual API
+    const fetchNews = async () => {
+      try {
+        // In a real implementation, you'd fetch from a news API using the doctor's specialty
+        // Example: `https://api.example.com/news?topic=${doctorProfile.specialty}`
+        
+        // Mock data for now
+        const mockNewsData = [
+          {
+            id: 1,
+            title: "New Breakthrough in Cardiology Treatment",
+            source: "Medical Journal",
+            date: "2023-10-24",
+            url: "#",
+          },
+          {
+            id: 2,
+            title: "Latest Guidelines for Heart Disease Prevention",
+            source: "Heart Association",
+            date: "2023-10-23",
+            url: "#",
+          },
+          {
+            id: 3,
+            title: "Advancements in Cardiac Imaging Technology",
+            source: "Medical Tech Today",
+            date: "2023-10-22",
+            url: "#",
+          },
+        ];
+        
+        setLatestNews(mockNewsData);
+      } catch (error) {
+        console.error("Error fetching news:", error);
+        setLatestNews([]);
+      }
+    };
+    
+    fetchNews();
+  }, [doctorProfile.specialty]);
+
+  // Handle "New Patient" button click
+  const handleNewPatientClick = () => {
+    navigate("/otp"); // Redirect to /otp route
+  };
+
+  // Handle profile update
+  const handleProfileUpdate = (updatedProfile) => {
+    setDoctorProfile({...doctorProfile, ...updatedProfile});
+  };
 
   // Render appropriate content based on active tab
   const renderTabContent = () => {
@@ -84,6 +130,7 @@ const DoctorDashboard = () => {
       case "overview":
         return (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Doctor Profile Card */}
             <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
               <h3 className="text-lg font-semibold mb-4 text-gray-800 flex items-center">
                 <svg
@@ -98,41 +145,37 @@ const DoctorDashboard = () => {
                     clipRule="evenodd"
                   />
                 </svg>
-                Profile Information
+                Doctor Profile
               </h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-gray-500">Specialty</p>
-                  <p className="font-medium">{doctorProfile.specialty}</p>
+              <div className="mb-4">
+                <div className="flex items-center mb-3">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl mr-4">
+                    {doctorProfile.name.split(' ').map(n => n[0]).join('')}
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-lg">{doctorProfile.name}</h4>
+                    <p className="text-blue-600">{doctorProfile.specialty}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm text-gray-500">Doctor ID</p>
-                  <p className="font-medium">{doctorProfile.id}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Email</p>
-                  <p className="font-medium">{doctorProfile.email}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Phone</p>
-                  <p className="font-medium">{doctorProfile.phone}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Hospital</p>
-                  <p className="font-medium">{doctorProfile.hospitalName}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Experience</p>
-                  <p className="font-medium">{doctorProfile.experience}</p>
+                <div className="grid grid-cols-2 gap-2 text-sm">
+                  <p className="text-gray-600"><span className="font-medium">ID:</span> {doctorProfile.id}</p>
+                  <p className="text-gray-600"><span className="font-medium">Experience:</span> {doctorProfile.experience}</p>
+                  <p className="text-gray-600"><span className="font-medium">Email:</span> {doctorProfile.email}</p>
+                  <p className="text-gray-600"><span className="font-medium">Phone:</span> {doctorProfile.phone}</p>
+                  <p className="text-gray-600"><span className="font-medium">Hospital:</span> {doctorProfile.hospitalName}</p>
                 </div>
               </div>
               <div className="mt-4 pt-4 border-t border-gray-100">
-                <button className="text-blue-600 text-sm font-medium hover:text-blue-800 transition-colors">
+                <button
+                  onClick={() => setActiveTab("settings")}
+                  className="text-blue-600 text-sm font-medium hover:text-blue-800 transition-colors"
+                >
                   Edit Profile
                 </button>
               </div>
             </div>
 
+            {/* Upcoming Appointments Card */}
             <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
               <h3 className="text-lg font-semibold mb-4 text-gray-800 flex items-center">
                 <svg
@@ -143,15 +186,15 @@ const DoctorDashboard = () => {
                 >
                   <path
                     fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                    d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
                     clipRule="evenodd"
                   />
                 </svg>
-                Today's Schedule
+                Upcoming Appointments
               </h3>
               <div className="divide-y divide-gray-100">
                 {upcomingAppointments
-                  .filter((app) => app.date === "Today")
+                  .slice(0, 3) // Show only 3 appointments initially
                   .map((appointment) => (
                     <div
                       key={appointment.id}
@@ -160,7 +203,7 @@ const DoctorDashboard = () => {
                       <div>
                         <p className="font-medium">{appointment.patient}</p>
                         <p className="text-sm text-gray-500">
-                          {appointment.type} • {appointment.time}
+                          {appointment.type} • {appointment.time} • {appointment.date}
                         </p>
                       </div>
                       <span
@@ -178,12 +221,16 @@ const DoctorDashboard = () => {
                   ))}
               </div>
               <div className="mt-4 pt-4 border-t border-gray-100">
-                <button className="text-blue-600 text-sm font-medium hover:text-blue-800 transition-colors">
+                <button
+                  onClick={() => setIsCalendarOpen(true)}
+                  className="text-blue-600 text-sm font-medium hover:text-blue-800 transition-colors"
+                >
                   View Full Schedule
                 </button>
               </div>
             </div>
 
+            {/* Latest Medical News Card (replacing Recent Patient Reports) */}
             <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
               <h3 className="text-lg font-semibold mb-4 text-gray-800 flex items-center">
                 <svg
@@ -194,43 +241,34 @@ const DoctorDashboard = () => {
                 >
                   <path
                     fillRule="evenodd"
-                    d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 100-12 6 6 0 000 12zm1-6a1 1 0 10-2 0v2a1 1 0 102 0V8z"
+                    d="M2 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3 1h6v4H5V6zm6 6H5v2h6v-2z"
                     clipRule="evenodd"
                   />
+                  <path d="M15 7h1a2 2 0 012 2v5.5a1.5 1.5 0 01-3 0V7z" />
                 </svg>
-                Recent Patient Reports
+                Latest {doctorProfile.specialty} News
               </h3>
               <div className="divide-y divide-gray-100">
-                {recentReports.map((report) => (
+                {latestNews.map((news) => (
                   <div
-                    key={report.id}
-                    className="py-3 flex justify-between items-center"
+                    key={news.id}
+                    className="py-3"
                   >
-                    <div>
-                      <p className="font-medium">{report.patient}</p>
-                      <p className="text-sm text-gray-500">
-                        {report.reportType} • {report.date}
-                      </p>
-                    </div>
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        report.status === "Reviewed"
-                          ? "bg-blue-100 text-blue-800"
-                          : "bg-orange-100 text-orange-800"
-                      }`}
-                    >
-                      {report.status}
-                    </span>
+                    <a href={news.url} className="font-medium hover:text-blue-600">{news.title}</a>
+                    <p className="text-sm text-gray-500">
+                      {news.source} • {news.date}
+                    </p>
                   </div>
                 ))}
               </div>
               <div className="mt-4 pt-4 border-t border-gray-100">
                 <button className="text-blue-600 text-sm font-medium hover:text-blue-800 transition-colors">
-                  View All Reports
+                  View More News
                 </button>
               </div>
             </div>
 
+            {/* Statistics Card */}
             <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
               <h3 className="text-lg font-semibold mb-4 text-gray-800 flex items-center">
                 <svg
@@ -241,7 +279,7 @@ const DoctorDashboard = () => {
                 >
                   <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
                 </svg>
-                Statistics
+                Clinical Statistics
               </h3>
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-blue-50 p-4 rounded-lg">
@@ -261,17 +299,17 @@ const DoctorDashboard = () => {
                   </p>
                 </div>
                 <div className="bg-purple-50 p-4 rounded-lg">
-                  <p className="text-sm text-purple-600 font-medium">Rating</p>
+                  <p className="text-sm text-purple-600 font-medium">Patient Rating</p>
                   <p className="text-2xl font-bold text-purple-800">
                     {doctorProfile.rating} <span className="text-sm">/ 5</span>
                   </p>
                 </div>
                 <div className="bg-orange-50 p-4 rounded-lg">
                   <p className="text-sm text-orange-600 font-medium">
-                    Success Rate
+                    Follow-up Rate
                   </p>
                   <p className="text-2xl font-bold text-orange-800">
-                    98<span className="text-sm">%</span>
+                    87<span className="text-sm">%</span>
                   </p>
                 </div>
               </div>
@@ -295,13 +333,139 @@ const DoctorDashboard = () => {
       case "settings":
         return (
           <div className="bg-white p-6 rounded-xl shadow-md">
-            <h3 className="text-lg font-semibold mb-4">Account Settings</h3>
-            <p>Settings and preferences would appear here.</p>
+            <h3 className="text-lg font-semibold mb-4">Profile Settings</h3>
+            <form className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                  <input 
+                    type="text" 
+                    value={doctorProfile.name}
+                    onChange={(e) => handleProfileUpdate({name: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Specialty</label>
+                  <input 
+                    type="text" 
+                    value={doctorProfile.specialty}
+                    onChange={(e) => handleProfileUpdate({specialty: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                  <input 
+                    type="email" 
+                    value={doctorProfile.email}
+                    onChange={(e) => handleProfileUpdate({email: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                  <input 
+                    type="text" 
+                    value={doctorProfile.phone}
+                    onChange={(e) => handleProfileUpdate({phone: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Hospital</label>
+                  <input 
+                    type="text" 
+                    value={doctorProfile.hospitalName}
+                    onChange={(e) => handleProfileUpdate({hospitalName: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Experience</label>
+                  <input 
+                    type="text" 
+                    value={doctorProfile.experience}
+                    onChange={(e) => handleProfileUpdate({experience: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+              <div className="pt-4">
+                <button 
+                  type="button"
+                  onClick={() => setActiveTab("overview")}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
           </div>
         );
       default:
         return <div>Select a tab to view content</div>;
     }
+  };
+
+  // Calendar Modal with Appointments for selected date
+  const CalendarModal = () => {
+    // Filter appointments for the selected date
+    const formattedSelectedDate = selectedDate.toISOString().split('T')[0];
+    const appointmentsForSelectedDate = upcomingAppointments.filter(
+      app => app.date === formattedSelectedDate
+    );
+    
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="bg-white rounded-lg p-6 w-full max-w-2xl">
+          <h3 className="text-xl font-semibold mb-4">Schedule Appointments</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <Calendar
+                onChange={setSelectedDate}
+                value={selectedDate}
+                className="border border-gray-200 rounded-lg"
+              />
+            </div>
+            <div>
+              <h4 className="font-medium mb-2">Appointments for {selectedDate.toLocaleDateString()}</h4>
+              {appointmentsForSelectedDate.length > 0 ? (
+                <div className="space-y-2 overflow-y-auto max-h-64">
+                  {appointmentsForSelectedDate.map(appointment => (
+                    <div key={appointment.id} className="p-3 border border-gray-200 rounded-md">
+                      <p className="font-medium">{appointment.patient}</p>
+                      <p className="text-sm text-gray-600">{appointment.time} - {appointment.type}</p>
+                      <span
+                        className={`mt-1 inline-block px-2 py-0.5 rounded-full text-xs font-medium ${
+                          appointment.status === "Confirmed"
+                            ? "bg-green-100 text-green-800"
+                            : appointment.status === "Waiting"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
+                        {appointment.status}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-gray-500">No appointments for this date.</p>
+              )}
+            </div>
+          </div>
+          <div className="mt-6 flex justify-end">
+            <button
+              onClick={() => setIsCalendarOpen(false)}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -358,43 +522,7 @@ const DoctorDashboard = () => {
           </div>
 
           <div className="flex items-center space-x-4">
-            <button className="p-2 text-gray-500 hover:text-blue-600 transition-colors">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                />
-              </svg>
-            </button>
-            <div className="relative">
-              <button className="flex items-center space-x-2">
-                <div className="w-10 h-10 rounded-full bg-blue-100 border-2 border-blue-500 flex items-center justify-center text-blue-600">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <span className="hidden md:block font-medium">
-                  {doctorProfile.name}
-                </span>
-              </button>
-            </div>
+            <UserButton afterSignOutUrl="/" />
           </div>
         </div>
       </header>
@@ -404,7 +532,10 @@ const DoctorDashboard = () => {
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold text-gray-800">Doctor Dashboard</h1>
           <div className="flex space-x-2">
-            <button className="px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+            <button
+              onClick={() => setIsCalendarOpen(true)}
+              className="px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5 inline mr-1"
@@ -421,7 +552,10 @@ const DoctorDashboard = () => {
               </svg>
               Schedule
             </button>
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+            <button
+              onClick={handleNewPatientClick}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5 inline mr-1"
@@ -444,6 +578,9 @@ const DoctorDashboard = () => {
         {/* Tab Content */}
         {renderTabContent()}
       </main>
+
+      {/* Calendar Modal */}
+      {isCalendarOpen && <CalendarModal />}
     </div>
   );
 };
