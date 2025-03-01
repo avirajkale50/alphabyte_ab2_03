@@ -546,36 +546,6 @@ const DoctorDashboard = () => {
               >
                 Settings
               </button>
-              <button
-                onClick={() => setActiveTab("patients")}
-                className={`px-2 py-1 font-medium ${
-                  activeTab === "patients"
-                    ? "text-blue-600 border-b-2 border-blue-600"
-                    : "text-gray-600 hover:text-blue-600"
-                }`}
-              >
-                Patients
-              </button>
-              <button
-                onClick={() => setActiveTab("reports")}
-                className={`px-2 py-1 font-medium ${
-                  activeTab === "reports"
-                    ? "text-blue-600 border-b-2 border-blue-600"
-                    : "text-gray-600 hover:text-blue-600"
-                }`}
-              >
-                Reports
-              </button>
-              <button
-                onClick={() => setActiveTab("settings")}
-                className={`px-2 py-1 font-medium ${
-                  activeTab === "settings"
-                    ? "text-blue-600 border-b-2 border-blue-600"
-                    : "text-gray-600 hover:text-blue-600"
-                }`}
-              >
-                Settings
-              </button>
             </nav>
           </div>
 
