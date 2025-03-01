@@ -54,9 +54,9 @@ const OTPVerification = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-b from-blue-50 to-blue-100">
+    <div className="flex flex-col md:flex-row min-h-screen bg-gradient-to-b from-blue-50 to-blue-100">
       {/* Sidebar */}
-      <div className="w-64 bg-white shadow-xl py-8 px-6 flex flex-col border-r border-gray-100">
+      <div className="w-full md:w-64 bg-white shadow-xl py-8 px-6 flex flex-col border-r border-gray-100">
         <div className="mb-12">
           <h2 className="text-2xl font-bold text-blue-700">
             SEWA<span className="text-blue-700 text-2xl ml-1">मित्र</span>
@@ -68,7 +68,7 @@ const OTPVerification = () => {
             OTP
           </button>
           <button className="w-full py-3 px-4 bg-white text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors border border-gray-200 flex items-center">
-          Dashboard
+            Dashboard
           </button>
         </div>
 
@@ -97,8 +97,8 @@ const OTPVerification = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex items-center justify-center p-8">
-        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-10 border border-gray-100">
+      <div className="flex-1 flex items-center justify-center p-4 md:p-8">
+        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 md:p-10 border border-gray-100">
           <div className="flex justify-center mb-8">
             <div className="h-14 w-14 rounded-full bg-blue-100 flex items-center justify-center">
               <svg
@@ -141,7 +141,7 @@ const OTPVerification = () => {
                   onChange={(e) => handleOtpChange(index, e.target.value)}
                   onKeyDown={(e) => handleKeyDown(index, e)}
                   onPaste={index === 0 ? handlePaste : null}
-                  className="w-14 h-14 text-center text-xl font-bold border-2 border-gray-400 rounded-lg focus:border-blue-500 focus:outline-none transition-all shadow-sm"
+                  className="w-12 h-12 md:w-14 md:h-14 text-center text-xl font-bold border-2 border-gray-400 rounded-lg focus:border-blue-500 focus:outline-none transition-all shadow-sm"
                 />
               ))}
             </div>
@@ -149,7 +149,7 @@ const OTPVerification = () => {
 
           <button
             onClick={handleVerify}
-            className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium transition-colors shadow-md flex items-center justify-center"
+            className="w-full py-3 md:py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium transition-colors shadow-md flex items-center justify-center"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -165,15 +165,6 @@ const OTPVerification = () => {
             </svg>
             Verify & Proceed
           </button>
-
-          <div className="flex justify-center mt-6">
-            <p className="text-sm text-gray-500">
-              Didn't receive code?{" "}
-              <button className="text-blue-600 font-medium hover:text-blue-800 transition-colors">
-                Resend
-              </button>
-            </p>
-          </div>
         </div>
       </div>
     </div>
