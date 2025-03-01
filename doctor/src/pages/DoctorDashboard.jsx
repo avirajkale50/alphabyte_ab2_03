@@ -16,6 +16,82 @@ const DoctorDashboard = () => {
   const { user } = useUser(); // Get authenticated user data from Clerk
   const navigate = useNavigate(); // Hook for navigation
 
+  // Add this state near your other state declarations
+  const [newsPage, setNewsPage] = useState(1);
+  const [allNews, setAllNews] = useState([]);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  // Doctor profile data (initialized from unsafeMetadata)
+  const [doctorProfile, setDoctorProfile] = useState({
+    name: user?.unsafeMetadata?.name || user?.fullName || "Your Name Here",
+    specialty: user?.unsafeMetadata?.specialty || "Your Field Here",
+    id: user?.id || "DOC-23456",
+    email: user?.primaryEmailAddress?.emailAddress || "Email Here",
+    phone: user?.unsafeMetadata?.phone || "Phone Number Here",
+    hospitalName: user?.unsafeMetadata?.hospitalName || "Add Your Hospital",
+    experience: user?.unsafeMetadata?.experience || "Add Your Experience",
+    patients: user?.unsafeMetadata?.patients || 1243,
+    consultations: user?.unsafeMetadata?.consultations || 5678,
+    rating: user?.unsafeMetadata?.rating || 4.8,
+  });
+
+  useEffect(() => {
+    const fetchNews = async (page = 1) => {
+      if (!doctorProfile.specialty) return;
+    
+      setIsLoadingMore(true);
+      try {
+        const today = new Date();
+        const oneMonthAgo = new Date();
+        oneMonthAgo.setMonth(today.getMonth() - 1);
+        
+        const formattedDate = oneMonthAgo.toISOString().split('T')[0];
+        const searchQuery = `${doctorProfile.specialty} AND (health OR medical OR medicine OR healthcare)`;
+        
+        const response = await fetch(
+          `https://newsapi.org/v2/everything?` +
+          `q=${encodeURIComponent(searchQuery)}` +
+          `&from=${formattedDate}` +
+          `&sortBy=publishedAt` +
+          `&language=en` +
+          `&page=${page}` +
+          `&pageSize=5` +
+          `&apiKey=28394c0a344b4b5696a744b60b206ede`
+        );
+    
+        const data = await response.json();
+    
+        if (data.status === 'ok') {
+          const formattedNews = data.articles.map((article, index) => ({
+            id: `${page}-${index + 1}`,
+            title: article.title,
+            source: article.source.name,
+            date: new Date(article.publishedAt).toLocaleDateString(),
+            url: article.url,
+            description: article.description,
+            image: article.urlToImage
+          }));
+    
+          if (page === 1) {
+            setLatestNews(formattedNews.slice(0, 3));
+            setAllNews(formattedNews);
+          } else {
+            setAllNews(prev => [...prev, ...formattedNews]);
+          }
+        } else {
+          throw new Error('Failed to fetch news');
+        }
+      } catch (error) {
+        console.error("Error fetching news:", error);
+        toast.error("Failed to load more news");
+      } finally {
+        setIsLoadingMore(false);
+      }
+    };
+  
+    fetchNews();
+  }, [doctorProfile.specialty]);
+  
   // Mock data for appointments (replace with actual API data)
   const upcomingAppointments = [
     {
@@ -59,63 +135,6 @@ const DoctorDashboard = () => {
       status: "Waiting",
     },
   ];
-
-  // Doctor profile data (initialized from unsafeMetadata)
-  const [doctorProfile, setDoctorProfile] = useState({
-    name: user?.unsafeMetadata?.name || user?.fullName || "Your Name Here",
-    specialty: user?.unsafeMetadata?.specialty || "Your Field Here",
-    id: user?.id || "DOC-23456",
-    email: user?.primaryEmailAddress?.emailAddress || "Email Here",
-    phone: user?.unsafeMetadata?.phone || "Phone Number Here",
-    hospitalName: user?.unsafeMetadata?.hospitalName || "Add Your Hospital",
-    experience: user?.unsafeMetadata?.experience || "Add Your Experience",
-    patients: user?.unsafeMetadata?.patients || 1243,
-    consultations: user?.unsafeMetadata?.consultations || 5678,
-    rating: user?.unsafeMetadata?.rating || 4.8,
-  });
-
-  // Fetch latest news related to doctor's specialty
-  useEffect(() => {
-    // Mock news API call - replace with actual API
-    const fetchNews = async () => {
-      try {
-        // In a real implementation, you'd fetch from a news API using the doctor's specialty
-        // Example: `https://api.example.com/news?topic=${doctorProfile.specialty}`
-        
-        // Mock data for now
-        const mockNewsData = [
-          {
-            id: 1,
-            title: "New Breakthrough in Cardiology Treatment",
-            source: "Medical Journal",
-            date: "2023-10-24",
-            url: "#",
-          },
-          {
-            id: 2,
-            title: "Latest Guidelines for Heart Disease Prevention",
-            source: "Heart Association",
-            date: "2023-10-23",
-            url: "#",
-          },
-          {
-            id: 3,
-            title: "Advancements in Cardiac Imaging Technology",
-            source: "Medical Tech Today",
-            date: "2023-10-22",
-            url: "#",
-          },
-        ];
-        
-        setLatestNews(mockNewsData);
-      } catch (error) {
-        console.error("Error fetching news:", error);
-        setLatestNews([]);
-      }
-    };
-    
-    fetchNews();
-  }, [doctorProfile.specialty]);
 
   // Handle "New Patient" button click
   const handleNewPatientClick = () => {
@@ -162,6 +181,13 @@ const DoctorDashboard = () => {
   
       console.log("Profile updated successfully!");
     }
+  };
+
+  // Add this function to handle "View More News"
+  const handleViewMoreNews = async () => {
+    const nextPage = newsPage + 1;
+    await fetchNews(nextPage);
+    setNewsPage(nextPage);
   };
 
   // Render appropriate content based on active tab
@@ -270,7 +296,7 @@ const DoctorDashboard = () => {
               </div>
             </div>
 
-            {/* Latest Medical News Card (replacing Recent Patient Reports) */}
+            {/* Latest Medical News Card with improved UI */}
             <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
               <h3 className="text-lg font-semibold mb-4 text-gray-800 flex items-center">
                 <svg
@@ -288,22 +314,67 @@ const DoctorDashboard = () => {
                 </svg>
                 Latest {doctorProfile.specialty} News
               </h3>
-              <div className="divide-y divide-gray-100">
-                {latestNews.map((news) => (
+              <div className="space-y-4">
+                {(newsPage === 1 ? latestNews : allNews).map((news) => (
                   <div
                     key={news.id}
-                    className="py-3"
+                    className="p-4 rounded-lg border border-gray-100 hover:shadow-md transition-shadow"
                   >
-                    <a href={news.url} className="font-medium hover:text-blue-600">{news.title}</a>
-                    <p className="text-sm text-gray-500">
-                      {news.source} • {news.date}
-                    </p>
+                    <div className="flex gap-4">
+                      {news.image && (
+                        <div className="flex-shrink-0">
+                          <img 
+                            src={news.image} 
+                            alt={news.title}
+                            className="w-24 h-24 object-cover rounded-lg"
+                            onError={(e) => e.target.style.display = 'none'}
+                          />
+                        </div>
+                      )}
+                      <div className="flex-grow">
+                        <a 
+                          href={news.url} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="font-semibold text-gray-900 hover:text-blue-600 line-clamp-2"
+                        >
+                          {news.title}
+                        </a>
+                        {news.description && (
+                          <p className="text-sm text-gray-600 mt-2 line-clamp-2">
+                            {news.description}
+                          </p>
+                        )}
+                        <div className="flex items-center gap-2 mt-2">
+                          <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded">
+                            {news.source}
+                          </span>
+                          <span className="text-xs text-gray-500">
+                            {news.date}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
               <div className="mt-4 pt-4 border-t border-gray-100">
-                <button className="text-blue-600 text-sm font-medium hover:text-blue-800 transition-colors">
-                  View More News
+                <button 
+                  onClick={handleViewMoreNews}
+                  disabled={isLoadingMore}
+                  className="w-full px-4 py-2 text-blue-600 bg-blue-50 rounded-md hover:bg-blue-100 transition-colors flex items-center justify-center"
+                >
+                  {isLoadingMore ? (
+                    <span className="flex items-center">
+                      <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      Loading...
+                    </span>
+                  ) : (
+                    'View More News'
+                  )}
                 </button>
               </div>
             </div>
