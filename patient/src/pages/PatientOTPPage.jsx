@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useUser } from "@clerk/clerk-react"; // Import Clerk's useUser hook
+import DriveButton from "./DriveButton";
 
 const PatientOTPPage = () => {
   const [driveLink, setDriveLink] = useState("");
@@ -172,7 +173,7 @@ const PatientOTPPage = () => {
           </button>
 
           <div className="space-y-3">
-            <button
+            <DriveButton
               onClick={handleFolderSelect}
               className="w-full py-2 px-4 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors border border-gray-200 flex items-center justify-center"
             >
@@ -180,7 +181,7 @@ const PatientOTPPage = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
               </svg>
               Select Folder
-            </button>
+            </DriveButton>
           </div>
         </div>
 

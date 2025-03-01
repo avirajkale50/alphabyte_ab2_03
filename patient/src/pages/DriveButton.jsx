@@ -81,7 +81,7 @@ const DriveButton = () => {
     }, []);
 
     return (
-        <button onClick={() => login()} className='connect-button'>
+        <button onClick={() => login()} className='w-full py-2 px-4 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors border border-gray-200 flex items-center justify-center'>
             Select Google Drive Folder
         </button>
     );
