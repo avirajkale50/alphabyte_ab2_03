@@ -1,10 +1,9 @@
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from pydantic import BaseModel
 from typing import Optional
 import os
 from pathlib import Path
-from google.oauth2.credentials import Credentials
 from google.oauth2 import credentials
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload
@@ -18,9 +17,9 @@ CORS(app)  # Enable CORS for all routes
 
 # Constants
 CACHE_DIR = Path("cache")
-DATA_DIR = Path("data")
-UPLOADS_DIR = DATA_DIR / "uploads"
 
+# Create uploads directory one level up from the current working directory
+UPLOADS_DIR = Path.cwd().parent / "uploads"
 UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
 
 GOOGLE_MIME_TYPES = {
@@ -48,7 +47,7 @@ def download_regular_file(service, file_id: str, folder_path: str, file_name: st
             while not done:
                 status, done = downloader.next_chunk()
                 print(f"Download progress: {int(status.progress() * 100)}%")
-                
+
         print(f"File successfully downloaded to: {file_path}")
         return file_path
     except Exception as e:
@@ -58,29 +57,29 @@ def download_regular_file(service, file_id: str, folder_path: str, file_name: st
 def download_google_file(service, file_id: str, folder_path: str, file_name: str, mime_type: str) -> str:
     try:
         print(f"Downloading Google Workspace file: {file_name} (ID: {file_id})")
-        
+
         if mime_type in GOOGLE_MIME_TYPES:
             export_mime_type, extension = GOOGLE_MIME_TYPES[mime_type]
             request = service.files().export_media(fileId=file_id, mimeType=export_mime_type)
-            
+
             if not file_name.endswith(extension):
                 file_name += extension
-                
+
             file_path = os.path.join(folder_path, file_name)
-            
+
             with io.FileIO(file_path, 'wb') as file:
                 downloader = MediaIoBaseDownload(file, request)
                 done = False
                 while not done:
                     status, done = downloader.next_chunk()
                     print(f"Download progress: {int(status.progress() * 100)}%")
-                    
+
             print(f"Google Workspace file successfully downloaded to: {file_path}")
             return file_path
         else:
             print(f"Unsupported Google Workspace file type: {mime_type}")
             return None
-            
+
     except Exception as e:
         print(f"Error downloading Google Workspace file {file_name}: {str(e)}")
         return None
@@ -89,12 +88,12 @@ def download_file(service, file_id: str, folder_path: str, file_name: str, mime_
     try:
         file = service.files().get(fileId=file_id, fields='mimeType').execute()
         file_mime_type = file.get('mimeType', '')
-        
+
         if file_mime_type.startswith('application/vnd.google-apps.'):
             return download_google_file(service, file_id, folder_path, file_name, file_mime_type)
         else:
             return download_regular_file(service, file_id, folder_path, file_name)
-            
+
     except Exception as e:
         print(f"Error in file download process for {file_name}: {str(e)}")
         return None
@@ -138,14 +137,14 @@ def download_folder():
         authorization = request.headers.get("Authorization")
         if not authorization:
             return jsonify({"error": "No authorization token provided"}), 401
-        
+
         token = authorization.replace("Bearer ", "")
-        
+
         creds = credentials.Credentials(
             token=token,
             scopes=['https://www.googleapis.com/auth/drive.readonly']
         )
-        
+
         service = build('drive', 'v3', credentials=creds)
         print("Google Drive service initialized.")
 
@@ -160,7 +159,7 @@ def download_folder():
         print(f"Created folder path: {folder_path}")
 
         download_folder_contents(service, folder_id, str(folder_path))
-        
+
         return jsonify({
             "status": "success",
             "message": "Folder downloaded successfully",
@@ -173,7 +172,7 @@ def download_folder():
         print("Stacktrace:")
         traceback.print_exc()
         return jsonify({"error": error_message}), 500
-    
+
     except Exception as e:
         error_message = f"An unexpected error occurred: {str(e)}"
         print(error_message)
@@ -186,4 +185,4 @@ def health_check():
     return jsonify({"status": "ok"})
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000)
+    app.run(host="0.0.0.0", port=8000, debug=True)
