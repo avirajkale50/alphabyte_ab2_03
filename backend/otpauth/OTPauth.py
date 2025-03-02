@@ -145,4 +145,4 @@ def end_session():
     return jsonify({"success": False, "message": "No active session found"}), 404
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=3000)

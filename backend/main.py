@@ -11,6 +11,7 @@ from io import BytesIO
 from googleapiclient.errors import HttpError
 import traceback
 import io
+import requests
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -29,17 +30,20 @@ GOOGLE_MIME_TYPES = {
     'application/vnd.google-apps.drawing': ('application/pdf', '.pdf'),
 }
 
+# Notification endpoint
+NOTIFICATION_ENDPOINT = "http://127.0.0.1:5000/kb"
+
 # Pydantic model for request validation
 class DriveRequest(BaseModel):
     folder_id: str
     credentials: Optional[dict] = None
 
 # Helper functions
-def download_regular_file(service, file_id: str, folder_path: str, file_name: str) -> str:
+def download_regular_file(service, file_id: str, file_name: str) -> str:
     try:
         print(f"Downloading regular file: {file_name} (ID: {file_id})")
         request = service.files().get_media(fileId=file_id)
-        file_path = os.path.join(folder_path, file_name)
+        file_path = os.path.join(str(UPLOADS_DIR), file_name)
 
         with io.FileIO(file_path, 'wb') as file:
             downloader = MediaIoBaseDownload(file, request)
@@ -54,7 +58,7 @@ def download_regular_file(service, file_id: str, folder_path: str, file_name: st
         print(f"Error downloading regular file {file_name}: {str(e)}")
         return None
 
-def download_google_file(service, file_id: str, folder_path: str, file_name: str, mime_type: str) -> str:
+def download_google_file(service, file_id: str, file_name: str, mime_type: str) -> str:
     try:
         print(f"Downloading Google Workspace file: {file_name} (ID: {file_id})")
 
@@ -65,7 +69,7 @@ def download_google_file(service, file_id: str, folder_path: str, file_name: str
             if not file_name.endswith(extension):
                 file_name += extension
 
-            file_path = os.path.join(folder_path, file_name)
+            file_path = os.path.join(str(UPLOADS_DIR), file_name)
 
             with io.FileIO(file_path, 'wb') as file:
                 downloader = MediaIoBaseDownload(file, request)
@@ -84,30 +88,21 @@ def download_google_file(service, file_id: str, folder_path: str, file_name: str
         print(f"Error downloading Google Workspace file {file_name}: {str(e)}")
         return None
 
-def download_file(service, file_id: str, folder_path: str, file_name: str, mime_type: str) -> str:
+def download_file(service, file_id: str, file_name: str, mime_type: str) -> str:
     try:
         file = service.files().get(fileId=file_id, fields='mimeType').execute()
         file_mime_type = file.get('mimeType', '')
 
         if file_mime_type.startswith('application/vnd.google-apps.'):
-            return download_google_file(service, file_id, folder_path, file_name, file_mime_type)
+            return download_google_file(service, file_id, file_name, file_mime_type)
         else:
-            return download_regular_file(service, file_id, folder_path, file_name)
+            return download_regular_file(service, file_id, file_name)
 
     except Exception as e:
         print(f"Error in file download process for {file_name}: {str(e)}")
         return None
 
-def get_folder_name(service, folder_id: str) -> str:
-    print(f"Fetching folder name for ID: {folder_id}")
-    try:
-        folder = service.files().get(fileId=folder_id, fields='name').execute()
-        return folder['name']
-    except Exception as e:
-        print(f"Error getting folder name: {str(e)}")
-        return f"folder_{folder_id}"
-
-def download_folder_contents(service, folder_id: str, folder_path: str):
+def download_folder_contents(service, folder_id: str, parent_path=""):
     print(f"Fetching contents of folder ID: {folder_id}")
     try:
         query = f"'{folder_id}' in parents"
@@ -122,13 +117,37 @@ def download_folder_contents(service, folder_id: str, folder_path: str):
         for item in items:
             print(f"Processing item: {item['name']} (Type: {item['mimeType']})")
             if item['mimeType'] == 'application/vnd.google-apps.folder':
-                subfolder_path = os.path.join(folder_path, item['name'])
-                os.makedirs(subfolder_path, exist_ok=True)
-                download_folder_contents(service, item['id'], subfolder_path)
+                # For subfolders, prepend the folder name to the files
+                subfolder_prefix = f"{parent_path}_{item['name']}" if parent_path else item['name']
+                download_folder_contents(service, item['id'], subfolder_prefix)
             else:
-                download_file(service, item['id'], folder_path, item['name'], item['mimeType'])
+                # For files, add prefix if there's a parent path
+                file_name = item['name']
+                if parent_path:
+                    base_name, ext = os.path.splitext(file_name)
+                    file_name = f"{parent_path}_{base_name}{ext}"
+                
+                download_file(service, item['id'], file_name, item['mimeType'])
     except Exception as e:
         print(f"Error processing folder contents: {str(e)}")
+
+def send_notification():
+    """Send notification to the specified endpoint after download is complete"""
+    try:
+        print(f"Sending POST notification to {NOTIFICATION_ENDPOINT}")
+        # Send a POST request instead of GET
+        response = requests.post(NOTIFICATION_ENDPOINT, json={})
+        if response.status_code == 200:
+            print("Notification sent successfully")
+            print(f"Response: {response.text}")
+            return True
+        else:
+            print(f"Notification failed with status code: {response.status_code}")
+            print(f"Response: {response.text}")
+            return False
+    except Exception as e:
+        print(f"Error sending notification: {str(e)}")
+        return False
 
 # Routes
 @app.route("/api/drive/download-folder", methods=["POST"])
@@ -153,17 +172,24 @@ def download_folder():
         if not folder_id:
             return jsonify({"error": "Folder ID is required"}), 400
 
-        folder_name = get_folder_name(service, folder_id)
-        folder_path = UPLOADS_DIR / folder_name
-        folder_path.mkdir(parents=True, exist_ok=True)
-        print(f"Created folder path: {folder_path}")
+        # Get folder name for prefixing files if needed
+        folder_name = ""
+        try:
+            folder = service.files().get(fileId=folder_id, fields='name').execute()
+            folder_name = folder.get('name', '')
+        except Exception as e:
+            print(f"Warning: Could not get folder name: {str(e)}")
 
-        download_folder_contents(service, folder_id, str(folder_path))
+        download_folder_contents(service, folder_id, folder_name)
+        
+        # Send notification after download is complete
+        notification_status = send_notification()
 
         return jsonify({
             "status": "success",
-            "message": "Folder downloaded successfully",
-            "folder_path": str(folder_path)
+            "message": "Folder contents downloaded successfully",
+            "folder_path": str(UPLOADS_DIR),
+            "notification_sent": notification_status
         })
 
     except HttpError as error:

@@ -21,6 +21,11 @@ Write-Host "Starting backend main..." -ForegroundColor Green
 Set-Location -Path "$currentDir\backend"
 Start-Process python -ArgumentList "main.py" -NoNewWindow
 
+# Start rag main
+Write-Host "Starting backend main..." -ForegroundColor Green
+Set-Location -Path "$currentDir"
+Start-Process python -ArgumentList "rag_endpt.py" -NoNewWindow
+
 # Start Redis in WSL
 Write-Host "Starting Redis in WSL..." -ForegroundColor Green
 Set-Location -Path $currentDir

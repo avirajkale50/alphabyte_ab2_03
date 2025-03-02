@@ -2,7 +2,7 @@ import os
 import faiss
 from langchain_community.vectorstores import FAISS
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 
 
 def create_vector_store(text_folder, rag_folder):
