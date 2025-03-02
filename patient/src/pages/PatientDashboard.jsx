@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "@clerk/clerk-react";
+import { useUser, UserButton } from "@clerk/clerk-react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -359,52 +359,58 @@ const PatientDashboard = () => {
       {/* Top Navigation */}
       <header className="bg-white shadow-md">
         <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center">
-            <h2 className="text-2xl font-bold text-blue-700 mr-8">
-              SEWA<span className="text-blue-700 text-2xl ml-1">मित्र</span>
-            </h2>
-            <nav className="hidden md:flex space-x-6">
-              <button
-                onClick={() => setActiveTab("overview")}
-                className={`px-2 py-1 font-medium ${
-                  activeTab === "overview"
-                    ? "text-blue-600 border-b-2 border-blue-600"
-                    : "text-gray-600 hover:text-blue-600"
-                }`}
-              >
-                Overview
-              </button>
-              <button
-                onClick={() => setActiveTab("appointments")}
-                className={`px-2 py-1 font-medium ${
-                  activeTab === "appointments"
-                    ? "text-blue-600 border-b-2 border-blue-600"
-                    : "text-gray-600 hover:text-blue-600"
-                }`}
-              >
-                Appointments
-              </button>
-              <button
-                onClick={() => setActiveTab("records")}
-                className={`px-2 py-1 font-medium ${
-                  activeTab === "records"
-                    ? "text-blue-600 border-b-2 border-blue-600"
-                    : "text-gray-600 hover:text-blue-600"
-                }`}
-              >
-                Medical Records
-              </button>
-              <button
-                onClick={() => setActiveTab("settings")}
-                className={`px-2 py-1 font-medium ${
-                  activeTab === "settings"
-                    ? "text-blue-600 border-b-2 border-blue-600"
-                    : "text-gray-600 hover:text-blue-600"
-                }`}
-              >
-                Settings
-              </button>
-            </nav>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <h2 className="text-2xl font-bold text-blue-700 mr-8">
+                SEWA<span className="text-blue-700 text-2xl ml-1">मित्र</span>
+              </h2>
+              <nav className="hidden md:flex space-x-6">
+                <button
+                  onClick={() => setActiveTab("overview")}
+                  className={`px-2 py-1 font-medium ${
+                    activeTab === "overview"
+                      ? "text-blue-600 border-b-2 border-blue-600"
+                      : "text-gray-600 hover:text-blue-600"
+                  }`}
+                >
+                  Overview
+                </button>
+                <button
+                  onClick={() => setActiveTab("appointments")}
+                  className={`px-2 py-1 font-medium ${
+                    activeTab === "appointments"
+                      ? "text-blue-600 border-b-2 border-blue-600"
+                      : "text-gray-600 hover:text-blue-600"
+                  }`}
+                >
+                  Appointments
+                </button>
+                <button
+                  onClick={() => setActiveTab("records")}
+                  className={`px-2 py-1 font-medium ${
+                    activeTab === "records"
+                      ? "text-blue-600 border-b-2 border-blue-600"
+                      : "text-gray-600 hover:text-blue-600"
+                  }`}
+                >
+                  Medical Records
+                </button>
+                <button
+                  onClick={() => setActiveTab("settings")}
+                  className={`px-2 py-1 font-medium ${
+                    activeTab === "settings"
+                      ? "text-blue-600 border-b-2 border-blue-600"
+                      : "text-gray-600 hover:text-blue-600"
+                  }`}
+                >
+                  Settings
+                </button>
+              </nav>
+            </div>
+            {/* Added Clerk UserButton for logout functionality */}
+            <div className="ml-4">
+              <UserButton afterSignOutUrl="/" />
+            </div>
           </div>
         </div>
       </header>
