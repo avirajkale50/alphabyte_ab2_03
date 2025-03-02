@@ -8,7 +8,7 @@ from backend.rag.ocr_processing import process_uploads, pdf_to_text
 from backend.rag.vector_store import create_vector_store
 from backend.rag.query_gemini import GeminiQuery
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain.docstore.document import Document
 
@@ -16,24 +16,24 @@ from langchain.docstore.document import Document
 app = Flask(__name__)
 CORS(app)  # Add CORS middleware
 
+# Base directory
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # Configuration
 CONFIG = {
-    'UPLOAD_FOLDER': './uploads',
-    'TEXT_FOLDER': './text',
-    'RAG_FOLDER': './rag',
+    'UPLOAD_FOLDER': os.path.join(BASE_DIR, 'uploads'),
+    'TEXT_FOLDER': os.path.join(BASE_DIR, 'text'),
+    'RAG_FOLDER': os.path.join(BASE_DIR, 'rag'),
     'ALLOWED_EXTENSIONS': {'pdf', 'txt'}
 }
 
 # Ensure directories exist
-for folder in [CONFIG['UPLOAD_FOLDER'], 
-               CONFIG['TEXT_FOLDER'], 
-               CONFIG['RAG_FOLDER']]:
+for folder in [CONFIG['UPLOAD_FOLDER'], CONFIG['TEXT_FOLDER'], CONFIG['RAG_FOLDER']]:
     os.makedirs(folder, exist_ok=True)
 
 # Helper function to check allowed file extensions
 def allowed_file(filename: str) -> bool:
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in CONFIG['ALLOWED_EXTENSIONS']
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in CONFIG['ALLOWED_EXTENSIONS']
 
 # Endpoint to create knowledge base
 @app.route("/kb", methods=["POST"])
@@ -44,6 +44,8 @@ def handle_kb():
         
         # Create new vector store
         create_vector_store(CONFIG['TEXT_FOLDER'], CONFIG['RAG_FOLDER'])
+
+        print("inside try")
         
         return jsonify({
             "status": "success",
