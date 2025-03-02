@@ -18,8 +18,8 @@ CORS(app)  # Enable CORS for all routes
 # Constants
 CACHE_DIR = Path("cache")
 
-# Ensure the "uploads" folder is at the root of the project
-UPLOADS_DIR = Path.cwd() / "uploads"
+# Create uploads directory one level up from the current working directory
+UPLOADS_DIR = Path.cwd().parent / "uploads"
 UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
 
 GOOGLE_MIME_TYPES = {
@@ -185,4 +185,4 @@ def health_check():
     return jsonify({"status": "ok"})
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000)
+    app.run(host="0.0.0.0", port=8000, debug=True)

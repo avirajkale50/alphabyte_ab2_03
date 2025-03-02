@@ -1,10 +1,9 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException
-from fastapi.middleware.cors import CORSMiddleware  # Add CORS middleware
-from fastapi.responses import JSONResponse
+from flask import Flask, request, jsonify, send_file
+from flask_cors import CORS
 from pydantic import BaseModel
-from fastapi.responses import FileResponse
-import os
 from typing import Optional
+import os
+from werkzeug.utils import secure_filename
 from backend.rag.ocr_processing import process_uploads, pdf_to_text
 from backend.rag.vector_store import create_vector_store
 from backend.rag.query_gemini import GeminiQuery
@@ -13,17 +12,9 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain.docstore.document import Document
 
-# Initialize FastAPI app
-app = FastAPI()
-
-# Add CORS middleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins (replace with your frontend URL in production)
-    allow_credentials=True,
-    allow_methods=["*"],  # Allow all methods (GET, POST, OPTIONS, etc.)
-    allow_headers=["*"],  # Allow all headers
-)
+# Initialize Flask app
+app = Flask(__name__)
+CORS(app)  # Add CORS middleware
 
 # Configuration
 CONFIG = {
@@ -39,29 +30,14 @@ for folder in [CONFIG['UPLOAD_FOLDER'],
                CONFIG['RAG_FOLDER']]:
     os.makedirs(folder, exist_ok=True)
 
-# Pydantic models for request/response
-class ChatRequest(BaseModel):
-    prompt: str
-
-class ChatResponse(BaseModel):
-    status: str
-    response: str
-
-class StandardResponse(BaseModel):
-    status: str
-    message: str
-    file_path: Optional[str] = None
-    vector_store_path: Optional[str] = None
-    filenames: Optional[list] = None
-
 # Helper function to check allowed file extensions
 def allowed_file(filename: str) -> bool:
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in CONFIG['ALLOWED_EXTENSIONS']
 
 # Endpoint to create knowledge base
-@app.post("/kb", response_model=StandardResponse)
-async def handle_kb():
+@app.route("/kb", methods=["POST"])
+def handle_kb():
     try:
         # Process all PDFs in uploads folder
         processed = process_uploads(CONFIG['UPLOAD_FOLDER'], CONFIG['TEXT_FOLDER'])
@@ -69,27 +45,29 @@ async def handle_kb():
         # Create new vector store
         create_vector_store(CONFIG['TEXT_FOLDER'], CONFIG['RAG_FOLDER'])
         
-        return StandardResponse(
-            status="success",
-            message="Knowledge base created",
-            vector_store_path=CONFIG['RAG_FOLDER']
-        )
+        return jsonify({
+            "status": "success",
+            "message": "Knowledge base created",
+            "vector_store_path": CONFIG['RAG_FOLDER']
+        })
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        return jsonify({"status": "error", "message": str(e)}), 500
 
-@app.post("/kb_add_file", response_model=StandardResponse)
-async def handle_add_file(file: UploadFile = File(...)):
-    if not file:
-        raise HTTPException(status_code=400, detail="No file uploaded")
+@app.route("/kb_add_file", methods=["POST"])
+def handle_add_file():
+    if 'file' not in request.files:
+        return jsonify({"status": "error", "message": "No file uploaded"}), 400
         
-    if not file.filename:
-        raise HTTPException(status_code=400, detail="Empty filename")
+    file = request.files['file']
+    
+    if file.filename == '':
+        return jsonify({"status": "error", "message": "Empty filename"}), 400
         
     if not allowed_file(file.filename):
-        raise HTTPException(status_code=400, detail="Invalid file type")
+        return jsonify({"status": "error", "message": "Invalid file type"}), 400
 
-    filename = file.filename  
+    filename = secure_filename(file.filename)
     text_content = ""
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=1000,
@@ -99,18 +77,14 @@ async def handle_add_file(file: UploadFile = File(...)):
     try:
         if filename.lower().endswith('.pdf'):
             pdf_path = os.path.join(CONFIG['UPLOAD_FOLDER'], filename)
-            with open(pdf_path, "wb") as buffer:
-                content = await file.read()
-                buffer.write(content)
+            file.save(pdf_path)
             text_path = pdf_to_text(pdf_path, CONFIG['TEXT_FOLDER'])
             with open(text_path, 'r', encoding='utf-8') as f:
                 text_content = f.read()
                 
         else:
             text_path = os.path.join(CONFIG['TEXT_FOLDER'], filename)
-            content = await file.read()
-            with open(text_path, "wb") as buffer:
-                buffer.write(content)
+            file.save(text_path)
             with open(text_path, 'r', encoding='utf-8') as f:
                 text_content = f.read()
 
@@ -126,71 +100,76 @@ async def handle_add_file(file: UploadFile = File(...)):
         vector_store.add_documents(splits)
         vector_store.save_local(CONFIG['RAG_FOLDER'])
         
-        return StandardResponse(
-            status="success",
-            message="File added to knowledge base",
-            file_path=text_path
-        )
+        return jsonify({
+            "status": "success",
+            "message": "File added to knowledge base",
+            "file_path": text_path
+        })
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        return jsonify({"status": "error", "message": str(e)}), 500
 
-@app.post("/chat", response_model=ChatResponse)
-async def handle_chat(request: ChatRequest):
+@app.route("/chat", methods=["POST"])
+def handle_chat():
     try:
+        data = request.get_json()
+        prompt = data.get("prompt", "")
+        
+        if not prompt:
+            return jsonify({"status": "error", "message": "No prompt provided"}), 400
+            
         qa = GeminiQuery(CONFIG['RAG_FOLDER'])
-        response = qa.query(request.prompt)
-        return ChatResponse(
-            status="success",
-            response=response
-        )
+        response = qa.query(prompt)
+        return jsonify({
+            "status": "success",
+            "response": response
+        })
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        return jsonify({"status": "error", "message": str(e)}), 500
     
-@app.get("/kb_files/{filename}")
-async def handle_kb_file(filename: str):
+@app.route("/kb_files/<filename>", methods=["GET"])
+def handle_kb_file(filename):
     try:
         file_path = os.path.join(CONFIG['UPLOAD_FOLDER'], filename)
         
         if not os.path.isfile(file_path):
-            raise HTTPException(status_code=404, detail="File not found")
+            return jsonify({"status": "error", "message": "File not found"}), 404
         
         if filename.lower().endswith('.pdf'):
-            return FileResponse(
+            return send_file(
                 file_path, 
-                media_type="application/pdf",
-                headers={
-                    "Content-Disposition": "inline; filename=" + filename
-                }
+                mimetype="application/pdf",
+                as_attachment=False,
+                download_name=filename
             )
         else:
-            return FileResponse(
+            return send_file(
                 file_path, 
-                media_type="application/octet-stream",
-                filename=filename
+                mimetype="application/octet-stream",
+                as_attachment=True,
+                download_name=filename
             )
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        return jsonify({"status": "error", "message": str(e)}), 500
     
-@app.get("/kb_files", response_model=StandardResponse)
-async def handle_kb_files():
+@app.route("/kb_files", methods=["GET"])
+def handle_kb_files():
     try:
         uploads_folder = CONFIG['UPLOAD_FOLDER']
         filenames = os.listdir(uploads_folder)
         
-        return StandardResponse(
-            status="success",
-            message="Files in uploads folder",
-            file_path=uploads_folder,
-            vector_store_path=None,
-            filenames=filenames
-        )
+        return jsonify({
+            "status": "success",
+            "message": "Files in uploads folder",
+            "file_path": uploads_folder,
+            "vector_store_path": None,
+            "filenames": filenames
+        })
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 if __name__ == '__main__':
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5000, debug=True)
