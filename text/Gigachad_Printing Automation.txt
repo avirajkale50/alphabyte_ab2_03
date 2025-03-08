@@ -1,0 +1,26 @@
+ABSTRACT :  
+ 
+Printing services in educational institutions and public centers often face 
+inefficiencies, such as long queues, misplaced or mixed-up prints, incorrect copies, 
+and resource wastage. Traditionally, staff at Xerox centers manually download 
+PDFs and print them, creating bottlenecks and opportunities for error. These issues 
+lead to frustration for customers and increased operational overhead for Xerox 
+centers.To address these challenges, we propose an automated printing system that 
+eliminates manual processing by allowing users to log in, upload documents, and 
+specify printing preferences (copies, duplex, color/BW) through a web portal or 
+WhatsApp integration. The request is directly sent to a local server-based queuing 
+mechanism on the Xerox shop's PC, which dynamically assigns print jobs to 
+available printers without a middleman.At the Xerox center, a desktop interface 
+continuously monitors printer availability and automates print execution, reducing 
+delays and human errors. Additionally, users can opt for stapling or punching, with 
+printed guide dots facilitating manual finishing. To enhance accessibility in India, 
+our system integrates WhatsApp as a user-friendly medium for submitting print 
+jobs, ensuring easy handling while maintaining privacy and security.Furthermore, 
+to prevent network-related interruptions in crowded areas like colleges during file 
+uploads, users can gain temporary access to a private WiFi network by scanning a 
+QR code, providing reliable internet connectivity for the duration of their 
+transaction. 
+ 
+Architecture Diagram :  
+ 
+

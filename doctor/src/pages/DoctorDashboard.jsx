@@ -56,7 +56,7 @@ const DoctorDashboard = () => {
           `&language=en` +
           `&page=${page}` +
           `&pageSize=5` +
-          `&apiKey=28394c0a344b4b5696a744b60b206ede`
+          `&apiKey=803855fe6e764b6db676807e1d44f4ac`
         );
     
         const data = await response.json();

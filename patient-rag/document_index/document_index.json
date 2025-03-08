@@ -807,7 +807,20 @@
   },
   {
     "id": 62,
-    "file_path": "./document_index/bandaging_62.txt",
+    "file_path": "./document_index/wound_dressing_62.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Wound Dressing",
+      "topic": "wound dressing",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/wound_dressing.md"
+    },
+    "content_preview": "## Wound Dressing: A Comprehensive First Aid Guide\n\nThis guide provides comprehensive information on..."
+  },
+  {
+    "id": 63,
+    "file_path": "./document_index/bandaging_63.txt",
     "metadata": {
       "source": "First Aid Information",
       "title": "First Aid Guide: Bandaging",
@@ -819,8 +832,8 @@
     "content_preview": "## First Aid Guide: Bandaging\n\nThis guide provides comprehensive information on bandaging techniques..."
   },
   {
-    "id": 63,
-    "file_path": "./document_index/splinting_63.txt",
+    "id": 64,
+    "file_path": "./document_index/splinting_64.txt",
     "metadata": {
       "source": "First Aid Information",
       "title": "First Aid Guide: Splinting",
@@ -832,8 +845,8 @@
     "content_preview": "## Splinting: A First Aid Guide\n\nThis guide provides information on splinting, a first aid technique..."
   },
   {
-    "id": 64,
-    "file_path": "./document_index/cpr_procedure_64.txt",
+    "id": 65,
+    "file_path": "./document_index/cpr_procedure_65.txt",
     "metadata": {
       "source": "First Aid Information",
       "title": "First Aid Guide: Cpr Procedure",
@@ -845,8 +858,8 @@
     "content_preview": "## Cardiopulmonary Resuscitation (CPR) First Aid Guide\n\n**Disclaimer:** This guide provides basic fi..."
   },
   {
-    "id": 65,
-    "file_path": "./document_index/recovery_position_65.txt",
+    "id": 66,
+    "file_path": "./document_index/recovery_position_66.txt",
     "metadata": {
       "source": "First Aid Information",
       "title": "First Aid Guide: Recovery Position",
@@ -858,8 +871,8 @@
     "content_preview": "## Recovery Position: A First Aid Guide\n\nThis guide provides information on the recovery position, a..."
   },
   {
-    "id": 66,
-    "file_path": "./document_index/heimlich_maneuver_66.txt",
+    "id": 67,
+    "file_path": "./document_index/heimlich_maneuver_67.txt",
     "metadata": {
       "source": "First Aid Information",
       "title": "First Aid Guide: Heimlich Maneuver",
@@ -871,8 +884,8 @@
     "content_preview": "## Heimlich Maneuver: A First Aid Guide\n\n**1. Definition and Symptoms**\n\nThe Heimlich maneuver (also..."
   },
   {
-    "id": 67,
-    "file_path": "./document_index/rescue_breathing_67.txt",
+    "id": 68,
+    "file_path": "./document_index/rescue_breathing_68.txt",
     "metadata": {
       "source": "First Aid Information",
       "title": "First Aid Guide: Rescue Breathing",
@@ -884,8 +897,8 @@
     "content_preview": "## Rescue Breathing: A First Aid Guide\n\n**1. Definition and Symptoms**\n\n**Definition:** Rescue breat..."
   },
   {
-    "id": 68,
-    "file_path": "./document_index/stopping_bleeding_68.txt",
+    "id": 69,
+    "file_path": "./document_index/stopping_bleeding_69.txt",
     "metadata": {
       "source": "First Aid Information",
       "title": "First Aid Guide: Stopping Bleeding",
@@ -897,8 +910,8 @@
     "content_preview": "## First Aid Guide: Stopping Bleeding\n\n**1. Definition and Symptoms**\n\nBleeding, or hemorrhage, is t..."
   },
   {
-    "id": 69,
-    "file_path": "./document_index/treating_burns_69.txt",
+    "id": 70,
+    "file_path": "./document_index/treating_burns_70.txt",
     "metadata": {
       "source": "First Aid Information",
       "title": "First Aid Guide: Treating Burns",
@@ -910,8 +923,8 @@
     "content_preview": "## First Aid Guide: Treating Burns\n\n**1. Definition and Symptoms:**\n\nA burn is an injury to the skin..."
   },
   {
-    "id": 70,
-    "file_path": "./document_index/treating_shock_70.txt",
+    "id": 71,
+    "file_path": "./document_index/treating_shock_71.txt",
     "metadata": {
       "source": "First Aid Information",
       "title": "First Aid Guide: Treating Shock",
@@ -923,8 +936,8 @@
     "content_preview": "## First Aid Guide: Treating Shock\n\n**Disclaimer:** This guide is for informational purposes only an..."
   },
   {
-    "id": 71,
-    "file_path": "./document_index/treating_hypothermia_71.txt",
+    "id": 72,
+    "file_path": "./document_index/treating_hypothermia_72.txt",
     "metadata": {
       "source": "First Aid Information",
       "title": "First Aid Guide: Treating Hypothermia",
@@ -936,8 +949,8 @@
     "content_preview": "## Hypothermia: A Comprehensive First Aid Guide\n\n**1. Definition and Symptoms:**\n\nHypothermia is a d..."
   },
   {
-    "id": 72,
-    "file_path": "./document_index/treating_hyperthermia_72.txt",
+    "id": 73,
+    "file_path": "./document_index/treating_hyperthermia_73.txt",
     "metadata": {
       "source": "First Aid Information",
       "title": "First Aid Guide: Treating Hyperthermia",
@@ -949,8 +962,8 @@
     "content_preview": "## Hyperthermia: A Comprehensive First Aid Guide\n\n**1. Definition and Symptoms:**\n\nHyperthermia refe..."
   },
   {
-    "id": 73,
-    "file_path": "./document_index/treating_sprains_73.txt",
+    "id": 74,
+    "file_path": "./document_index/treating_sprains_74.txt",
     "metadata": {
       "source": "First Aid Information",
       "title": "First Aid Guide: Treating Sprains",
@@ -962,8 +975,8 @@
     "content_preview": "## First Aid Guide: Sprains\n\nThis guide provides information on the recognition and initial manageme..."
   },
   {
-    "id": 74,
-    "file_path": "./document_index/treating_fractures_74.txt",
+    "id": 75,
+    "file_path": "./document_index/treating_fractures_75.txt",
     "metadata": {
       "source": "First Aid Information",
       "title": "First Aid Guide: Treating Fractures",
@@ -975,8 +988,8 @@
     "content_preview": "## First Aid Guide: Fractures\n\nThis guide provides first aid information for suspected fractures. It..."
   },
   {
-    "id": 75,
-    "file_path": "./document_index/treating_concussion_75.txt",
+    "id": 76,
+    "file_path": "./document_index/treating_concussion_76.txt",
     "metadata": {
       "source": "First Aid Information",
       "title": "First Aid Guide: Treating Concussion",
@@ -988,8 +1001,8 @@
     "content_preview": "## Concussion: A First Aid Guide\n\nThis guide provides information on the recognition, initial manage..."
   },
   {
-    "id": 76,
-    "file_path": "./document_index/treating_seizures_76.txt",
+    "id": 77,
+    "file_path": "./document_index/treating_seizures_77.txt",
     "metadata": {
       "source": "First Aid Information",
       "title": "First Aid Guide: Treating Seizures",
@@ -1001,8 +1014,8 @@
     "content_preview": "## First Aid Guide: Treating Seizures\n\nThis guide provides information on how to provide first aid f..."
   },
   {
-    "id": 77,
-    "file_path": "./document_index/treating_allergic_reactions_77.txt",
+    "id": 78,
+    "file_path": "./document_index/treating_allergic_reactions_78.txt",
     "metadata": {
       "source": "First Aid Information",
       "title": "First Aid Guide: Treating Allergic Reactions",
@@ -1014,8 +1027,8 @@
     "content_preview": "## Allergic Reactions: A Comprehensive First Aid Guide\n\n**Disclaimer:** *This guide provides general..."
   },
   {
-    "id": 78,
-    "file_path": "./document_index/treating_anaphylaxis_78.txt",
+    "id": 79,
+    "file_path": "./document_index/treating_anaphylaxis_79.txt",
     "metadata": {
       "source": "First Aid Information",
       "title": "First Aid Guide: Treating Anaphylaxis",
@@ -1027,8 +1040,8 @@
     "content_preview": "**Anaphylaxis: A First Aid Guide**\n\n**Disclaimer:** This guide provides basic first aid information ..."
   },
   {
-    "id": 79,
-    "file_path": "./document_index/using_epipen_79.txt",
+    "id": 80,
+    "file_path": "./document_index/using_epipen_80.txt",
     "metadata": {
       "source": "First Aid Information",
       "title": "First Aid Guide: Using Epipen",
@@ -1040,8 +1053,8 @@
     "content_preview": "**Disclaimer:** This guide is for informational purposes only and should not be considered a substit..."
   },
   {
-    "id": 80,
-    "file_path": "./document_index/first_aid_kit_80.txt",
+    "id": 81,
+    "file_path": "./document_index/first_aid_kit_81.txt",
     "metadata": {
       "source": "First Aid Information",
       "title": "First Aid Guide: First Aid Kit",

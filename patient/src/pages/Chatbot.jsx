@@ -285,11 +285,9 @@ const Chatbot = () => {
       setChatMessages((prevMessages) => [...prevMessages, tempLoadingMessage]);
 
       // Make API request to the backend
-      const response = await fetch(
-        "https://wwqgb2tx-8001.inc1.devtunnels.ms/query",
-        {
-          method: "POST",
-          headers: {
+      const response = await fetch("http://localhost:8001/query", {
+        method: "POST",
+        headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ question: message }),

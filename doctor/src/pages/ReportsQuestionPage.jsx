@@ -5,12 +5,7 @@ import { useParams } from "react-router-dom";
 const ReportsQuestionPage = () => {
   const { patientUsername } = useParams();
   const [question, setQuestion] = useState("");
-  const [reports, setReports] = useState([
-    { id: "01", name: "user-report-01" },
-    { id: "02", name: "user-report-02" },
-    { id: "03", name: "user-report-03" },
-    { id: "04", name: "user-report-04" },
-  ]);
+  const [reports, setReports] = useState([]);
   const [chatMessages, setChatMessages] = useState([]);
   const [selectedReport, setSelectedReport] = useState(null);
   const chatContainerRef = useRef(null);
@@ -64,13 +59,10 @@ const ReportsQuestionPage = () => {
         setIsUploading(true);
 
         // Send the file to backend endpoint
-        const response = await fetch(
-          "https://wwqgb2tx-8001.inc1.devtunnels.ms/kb_add_file",
-          {
-            method: "POST",   
-            body: formData,
-          }
-        );
+        const response = await fetch("http://localhost:8000/kb_add_file", {
+          method: "POST",
+          body: formData,
+        });
 
         const data = await response.json();
 
@@ -128,7 +120,7 @@ const ReportsQuestionPage = () => {
     setQuestion(e.target.value);
   };
 
-  const handleSubmitQuestion = (e) => {
+  const handleSubmitQuestion = async (e) => {
     e.preventDefault();
     if (question.trim()) {
       // Add doctor's message to chat
@@ -145,21 +137,50 @@ const ReportsQuestionPage = () => {
       setChatMessages((prevMessages) => [...prevMessages, doctorMessage]);
       setQuestion("");
 
-      // Simulate bot response after a short delay
-      setTimeout(() => {
-        const botMessage = {
-          id: Date.now() + 1,
-          text: `Response to: "${question.trim()}"${
-            selectedReport ? ` based on report ${selectedReport}` : ""
-          }`,
-          sender: "bot",
-          timestamp: new Date().toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
+      try {
+        // Send the question to the backend API
+        const response = await fetch("http://localhost:8000/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            prompt: question.trim(),
           }),
-        };
-        setChatMessages((prevMessages) => [...prevMessages, botMessage]);
-      }, 1000);
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Add bot's response to chat
+          const botMessage = {
+            id: Date.now() + 1,
+            text: data.response, // Use the response from the backend
+            sender: "bot",
+            timestamp: new Date().toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+          };
+          setChatMessages((prevMessages) => [...prevMessages, botMessage]);
+        } else {
+          // Handle error response from the backend
+          const errorMessage = {
+            id: Date.now() + 1,
+            text: `Error: ${
+              data.message || "Failed to get a response from the server."
+            }`,
+            sender: "bot",
+            timestamp: new Date().toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+          };
+          setChatMessages((prevMessages) => [...prevMessages, errorMessage]);
+        }
+      } catch (error) {
+        console.error("Error sending question to backend:", error);
+      }
     }
   };
 
