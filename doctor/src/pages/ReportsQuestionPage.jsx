@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 const ReportsQuestionPage = () => {
   const { patientUsername } = useParams();
   const [question, setQuestion] = useState("");
-  const [reports] = useState([
+  const [reports, setReports] = useState([
     { id: "01", name: "user-report-01" },
     { id: "02", name: "user-report-02" },
     { id: "03", name: "user-report-03" },
@@ -20,9 +20,13 @@ const ReportsQuestionPage = () => {
   const [remarks, setRemarks] = useState([]);
   const [isRemarkModalOpen, setIsRemarkModalOpen] = useState(false);
   const [currentRemark, setCurrentRemark] = useState("");
-  
+
   // Add activeView state to track which view is currently active
   const [activeView, setActiveView] = useState("chat"); // Default to chat view
+
+  // Add state for file upload feedback
+  const [uploadStatus, setUploadStatus] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   // Display patient username when available
   useEffect(() => {
@@ -39,7 +43,87 @@ const ReportsQuestionPage = () => {
         chatContainerRef.current.scrollHeight;
     }
   }, [chatMessages]);
+  const handleRemarkSubmit = async (e) => {
+    e.preventDefault();
+    if (currentRemark.trim()) {
+      // Generate a filename for the text file
+      const timestamp = new Date().getTime();
+      const filename = `remark-${timestamp}.txt`;
 
+      // Create a text file from the remark
+      const file = new File([currentRemark], filename, {
+        type: "text/plain",
+        lastModified: new Date(),
+      });
+
+      // Create FormData to send file to backend
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        setIsUploading(true);
+
+        // Send the file to backend endpoint
+        const response = await fetch(
+          "https://wwqgb2tx-8001.inc1.devtunnels.ms/kb_add_file",
+          {
+            method: "POST",   
+            body: formData,
+          }
+        );
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setUploadStatus({
+            success: true,
+            message: `File added successfully! ${data.chunks_added} chunks created.`,
+          });
+
+          // Add the new report to the reports list
+          const newReportId = `${reports.length + 1}`.padStart(2, "0");
+          setReports([
+            ...reports,
+            {
+              id: newReportId,
+              name: filename,
+            },
+          ]);
+
+          // Save the remark in the UI
+          const newRemark = {
+            id: Date.now(),
+            text: currentRemark,
+            timestamp: new Date().toLocaleString(),
+            reportId: selectedReport,
+            filename: filename,
+          };
+
+          setRemarks([...remarks, newRemark]);
+          setCurrentRemark("");
+          setIsRemarkModalOpen(false);
+        } else {
+          setUploadStatus({
+            success: false,
+            message: `Error: ${data.message}`,
+          });
+        }
+      } catch (error) {
+        console.error("Error uploading file:", error);
+        setUploadStatus({
+          success: false,
+          message: `Error uploading file: ${error.message}`,
+        });
+      } finally {
+        setIsUploading(false);
+
+        // Clear status after 5 seconds
+        setTimeout(() => {
+          setUploadStatus(null);
+        }, 5000);
+      }
+    }
+  };
   const handleQuestionChange = (e) => {
     setQuestion(e.target.value);
   };
@@ -102,21 +186,71 @@ const ReportsQuestionPage = () => {
     setIsRemarkModalOpen(false);
   };
 
-  // New handler for submitting a remark
-  const handleRemarkSubmit = (e) => {
-    e.preventDefault();
-    if (currentRemark.trim()) {
-      const newRemark = {
-        id: Date.now(),
-        text: currentRemark,
-        timestamp: new Date().toLocaleString(),
-        reportId: selectedReport,
-      };
-      setRemarks([...remarks, newRemark]);
-      setCurrentRemark("");
-      setIsRemarkModalOpen(false);
+  // New function to create and upload text file from remark
+  const uploadRemarkAsTextFile = async (text, filename) => {
+    try {
+      setIsUploading(true);
+
+      // Create a text file from the remark
+      const file = new File([text], `${filename}.txt`, {
+        type: "text/plain",
+        lastModified: new Date(),
+      });
+
+      // Create FormData to send file to backend
+      const formData = new FormData();
+      formData.append("file", file);
+
+      // Send the file to backend endpoint
+      const response = await fetch("/kb_add_file", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setUploadStatus({
+          success: true,
+          message: `File added successfully! ${data.chunks_added} chunks created.`,
+        });
+
+        // Add the new report to the reports list
+        const newReportId = `${reports.length + 1}`.padStart(2, "0");
+        setReports([
+          ...reports,
+          {
+            id: newReportId,
+            name: filename,
+          },
+        ]);
+
+        return true;
+      } else {
+        setUploadStatus({
+          success: false,
+          message: `Error: ${data.message}`,
+        });
+        return false;
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      setUploadStatus({
+        success: false,
+        message: `Error uploading file: ${error.message}`,
+      });
+      return false;
+    } finally {
+      setIsUploading(false);
+
+      // Clear status after 5 seconds
+      setTimeout(() => {
+        setUploadStatus(null);
+      }, 5000);
     }
   };
+
+  
 
   // New handler for closing remark modal
   const handleCloseModal = () => {
@@ -136,8 +270,8 @@ const ReportsQuestionPage = () => {
         <div className="space-y-3 flex-1">
           <button
             className={`w-full py-3 px-4 rounded-lg font-medium transition-colors border border-gray-200 flex items-center ${
-              activeView === "addRemark" 
-                ? "bg-blue-600 text-white hover:bg-blue-700" 
+              activeView === "addRemark"
+                ? "bg-blue-600 text-white hover:bg-blue-700"
                 : "bg-white text-gray-700 hover:bg-gray-50"
             }`}
             onClick={handleAddRemarkClick}
@@ -147,17 +281,17 @@ const ReportsQuestionPage = () => {
           <button
             className={`w-full py-3 px-4 rounded-lg font-medium transition-colors border border-gray-200 flex items-center ${
               activeView === "remarks" && !isRemarkModalOpen
-                ? "bg-blue-600 text-white hover:bg-blue-700" 
+                ? "bg-blue-600 text-white hover:bg-blue-700"
                 : "bg-white text-gray-700 hover:bg-gray-50"
             }`}
             onClick={handleCheckRemarkClick}
           >
             Check Remark
           </button>
-          <button 
+          <button
             className={`w-full py-3 px-4 rounded-lg font-medium transition-colors shadow-sm flex items-center ${
-              activeView === "chat" 
-                ? "bg-blue-600 text-white hover:bg-blue-700" 
+              activeView === "chat"
+                ? "bg-blue-600 text-white hover:bg-blue-700"
                 : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200"
             }`}
             onClick={handleChatClick}
@@ -180,22 +314,6 @@ const ReportsQuestionPage = () => {
                   <p className="text-xs text-gray-500">Medical Professional</p>
                 </div>
               </div>
-              {/* <SignOutButton>
-                <button className="text-xs text-gray-500 hover:text-red-500">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M3 3a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1V4a1 1 0 00-1-1H3zm10.293 9.707a1 1 0 001.414-1.414l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L10 11.414V15a1 1 0 102 0v-3.586l1.293 1.293z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </button>
-              </SignOutButton> */}
             </div>
           ) : (
             <div className="flex items-center">
@@ -227,6 +345,41 @@ const ReportsQuestionPage = () => {
       {/* Main Content */}
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl p-8 border border-gray-100 h-[90vh] flex flex-col">
+          {/* Upload Status Alert */}
+          {uploadStatus && (
+            <div
+              className={`mb-4 p-3 rounded-lg flex items-center ${
+                uploadStatus.success
+                  ? "bg-green-100 text-green-800"
+                  : "bg-red-100 text-red-800"
+              }`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-5 w-5 mr-2 ${
+                  uploadStatus.success ? "text-green-500" : "text-red-500"
+                }`}
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                {uploadStatus.success ? (
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clipRule="evenodd"
+                  />
+                ) : (
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                    clipRule="evenodd"
+                  />
+                )}
+              </svg>
+              {uploadStatus.message}
+            </div>
+          )}
+
           {/* Remark Modal */}
           {isRemarkModalOpen && (
             <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center z-10">
@@ -238,18 +391,21 @@ const ReportsQuestionPage = () => {
                     onChange={(e) => setCurrentRemark(e.target.value)}
                     className="w-full p-3 border border-gray-300 rounded-lg mb-4 h-32"
                     placeholder="Enter your remark here..."
+                    disabled={isUploading}
                   ></textarea>
                   <div className="flex justify-end space-x-3">
                     <button
                       type="button"
                       onClick={handleCloseModal}
                       className="px-4 py-2 text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200"
+                      disabled={isUploading}
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
                       className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+
                     >
                       Save Remark
                     </button>

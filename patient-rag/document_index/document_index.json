@@ -1,0 +1,1055 @@
+[
+  {
+    "id": 0,
+    "file_path": "./document_index/common_cold_0.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Common Cold",
+      "topic": "common cold",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/common_cold.md"
+    },
+    "content_preview": "## First Aid Guide: Common Cold\n\n**Disclaimer:** This guide provides first aid information for the c..."
+  },
+  {
+    "id": 1,
+    "file_path": "./document_index/influenza_1.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Influenza",
+      "topic": "influenza",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/influenza.md"
+    },
+    "content_preview": "## First Aid Guide: Influenza (The Flu)\n\n**Disclaimer:** This guide provides general information and..."
+  },
+  {
+    "id": 2,
+    "file_path": "./document_index/sore_throat_2.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Sore Throat",
+      "topic": "sore throat",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/sore_throat.md"
+    },
+    "content_preview": "## Sore Throat: A First Aid Guide\n\n**1. Definition and Symptoms:**\n\nA sore throat, also known as pha..."
+  },
+  {
+    "id": 3,
+    "file_path": "./document_index/runny_nose_3.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Runny Nose",
+      "topic": "runny nose",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/runny_nose.md"
+    },
+    "content_preview": "## Runny Nose: First Aid and Management\n\n**1. Definition and Symptoms**\n\n*   **Definition:** A runny..."
+  },
+  {
+    "id": 4,
+    "file_path": "./document_index/fever_4.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Fever",
+      "topic": "fever",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/fever.md"
+    },
+    "content_preview": "## First Aid Guide: Fever\n\n**1. Definition and Symptoms**\n\n*   **Definition:** Fever is defined as a..."
+  },
+  {
+    "id": 5,
+    "file_path": "./document_index/cough_5.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Cough",
+      "topic": "cough",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/cough.md"
+    },
+    "content_preview": "## First Aid Guide: Cough\n\n**Disclaimer:** This guide provides basic first aid information for cough..."
+  },
+  {
+    "id": 6,
+    "file_path": "./document_index/headache_6.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Headache",
+      "topic": "headache",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/headache.md"
+    },
+    "content_preview": "## First Aid Guide: Headache\n\n**1. Definition and Symptoms**\n\nA headache is pain in any region of th..."
+  },
+  {
+    "id": 7,
+    "file_path": "./document_index/migraine_7.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Migraine",
+      "topic": "migraine",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/migraine.md"
+    },
+    "content_preview": "## Migraine: A First Aid Guide\n\n**Disclaimer:** This guide provides general first aid information fo..."
+  },
+  {
+    "id": 8,
+    "file_path": "./document_index/allergies_8.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Allergies",
+      "topic": "allergies",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/allergies.md"
+    },
+    "content_preview": "## First Aid Guide: Allergies\n\n**1. Definition and Symptoms**\n\nAn allergy is a hypersensitivity reac..."
+  },
+  {
+    "id": 9,
+    "file_path": "./document_index/sinusitis_9.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Sinusitis",
+      "topic": "sinusitis",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/sinusitis.md"
+    },
+    "content_preview": "## First Aid Guide: Sinusitis\n\nThis guide provides first aid and self-care advice for managing sinus..."
+  },
+  {
+    "id": 10,
+    "file_path": "./document_index/bronchitis_10.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Bronchitis",
+      "topic": "bronchitis",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/bronchitis.md"
+    },
+    "content_preview": "## First Aid Guide: Bronchitis\n\n**Disclaimer:** This guide provides basic first aid information for ..."
+  },
+  {
+    "id": 11,
+    "file_path": "./document_index/ear_infection_11.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Ear Infection",
+      "topic": "ear infection",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/ear_infection.md"
+    },
+    "content_preview": "## First Aid Guide: Ear Infections\n\n**Disclaimer:** This guide provides basic first aid information ..."
+  },
+  {
+    "id": 12,
+    "file_path": "./document_index/pink_eye_12.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Pink Eye",
+      "topic": "pink eye",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/pink_eye.md"
+    },
+    "content_preview": "## First Aid Guide: Conjunctivitis (Pink Eye)\n\nThis guide provides information on first aid for conj..."
+  },
+  {
+    "id": 13,
+    "file_path": "./document_index/conjunctivitis_13.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Conjunctivitis",
+      "topic": "conjunctivitis",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/conjunctivitis.md"
+    },
+    "content_preview": "## First Aid Guide: Conjunctivitis (Pink Eye)\n\n**Disclaimer:** This guide provides first aid informa..."
+  },
+  {
+    "id": 14,
+    "file_path": "./document_index/stye_14.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Stye",
+      "topic": "stye",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/stye.md"
+    },
+    "content_preview": "## Stye: A Comprehensive First Aid Guide\n\n**1. Definition and Symptoms:**\n\nA stye (also known as hor..."
+  },
+  {
+    "id": 15,
+    "file_path": "./document_index/cuts_15.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Cuts",
+      "topic": "cuts",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/cuts.md"
+    },
+    "content_preview": "## First Aid Guide: Cuts\n\n**1. Definition and Symptoms**\n\n*   **Definition:** A cut, also known as a..."
+  },
+  {
+    "id": 16,
+    "file_path": "./document_index/scrapes_16.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Scrapes",
+      "topic": "scrapes",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/scrapes.md"
+    },
+    "content_preview": "## First Aid Guide: Scrapes (Abrasions)\n\n**1. Definition and Symptoms:**\n\n* **Definition:** A scrape..."
+  },
+  {
+    "id": 17,
+    "file_path": "./document_index/burns_17.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Burns",
+      "topic": "burns",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/burns.md"
+    },
+    "content_preview": "## First Aid Guide: Burns\n\nThis guide provides information on how to administer first aid for burns...."
+  },
+  {
+    "id": 18,
+    "file_path": "./document_index/sunburn_18.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Sunburn",
+      "topic": "sunburn",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/sunburn.md"
+    },
+    "content_preview": "## Sunburn: First Aid Guide\n\n**1. Definition and Symptoms**\n\nSunburn is an inflammatory skin conditi..."
+  },
+  {
+    "id": 19,
+    "file_path": "./document_index/insect_bites_19.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Insect Bites",
+      "topic": "insect bites",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/insect_bites.md"
+    },
+    "content_preview": "## Insect Bites: A First Aid Guide\n\n**1. Definition and Symptoms**\n\nAn insect bite is a puncture wou..."
+  },
+  {
+    "id": 20,
+    "file_path": "./document_index/bee_sting_20.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Bee Sting",
+      "topic": "bee sting",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/bee_sting.md"
+    },
+    "content_preview": "## First Aid Guide: Bee Sting\n\nThis guide provides comprehensive information on managing bee stings,..."
+  },
+  {
+    "id": 21,
+    "file_path": "./document_index/spider_bite_21.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Spider Bite",
+      "topic": "spider bite",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/spider_bite.md"
+    },
+    "content_preview": "## Spider Bite First Aid Guide\n\n**Disclaimer:** This guide provides general first aid information. I..."
+  },
+  {
+    "id": 22,
+    "file_path": "./document_index/poison_ivy_22.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Poison Ivy",
+      "topic": "poison ivy",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/poison_ivy.md"
+    },
+    "content_preview": "## Poison Ivy Dermatitis: A First Aid Guide\n\n**1. Definition and Symptoms:**\n\nPoison ivy dermatitis ..."
+  },
+  {
+    "id": 23,
+    "file_path": "./document_index/rash_23.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Rash",
+      "topic": "rash",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/rash.md"
+    },
+    "content_preview": "## First Aid Guide: Rash\n\n**1. Definition and Symptoms**\n\nA rash is a visible eruption of the skin t..."
+  },
+  {
+    "id": 24,
+    "file_path": "./document_index/hives_24.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Hives",
+      "topic": "hives",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/hives.md"
+    },
+    "content_preview": "## First Aid Guide: Hives (Urticaria)\n\n**1. Definition and Symptoms:**\n\n**Definition:** Hives, also ..."
+  },
+  {
+    "id": 25,
+    "file_path": "./document_index/bruise_25.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Bruise",
+      "topic": "bruise",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/bruise.md"
+    },
+    "content_preview": "## First Aid Guide: Bruises (Contusions)\n\n**1. Definition and Symptoms**\n\nA bruise, also known as a ..."
+  },
+  {
+    "id": 26,
+    "file_path": "./document_index/sprain_26.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Sprain",
+      "topic": "sprain",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/sprain.md"
+    },
+    "content_preview": "## First Aid Guide: Sprains\n\n**1. Definition and Symptoms**\n\nA sprain is an injury to a ligament, th..."
+  },
+  {
+    "id": 27,
+    "file_path": "./document_index/strain_27.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Strain",
+      "topic": "strain",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/strain.md"
+    },
+    "content_preview": "## Strain: A First Aid Guide\n\n**1. Definition and Symptoms**\n\nA strain is an injury to a muscle or t..."
+  },
+  {
+    "id": 28,
+    "file_path": "./document_index/fracture_28.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Fracture",
+      "topic": "fracture",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/fracture.md"
+    },
+    "content_preview": "## First Aid Guide: Fractures\n\n**Disclaimer:** This guide provides basic first aid information for f..."
+  },
+  {
+    "id": 29,
+    "file_path": "./document_index/broken_bone_29.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Broken Bone",
+      "topic": "broken bone",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/broken_bone.md"
+    },
+    "content_preview": "## First Aid Guide: Broken Bone (Fracture)\n\n**Disclaimer:** This guide provides basic first aid info..."
+  },
+  {
+    "id": 30,
+    "file_path": "./document_index/concussion_30.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Concussion",
+      "topic": "concussion",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/concussion.md"
+    },
+    "content_preview": "## Concussion: A First Aid Guide\n\nThis guide provides information on recognizing, managing, and prev..."
+  },
+  {
+    "id": 31,
+    "file_path": "./document_index/head_injury_31.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Head Injury",
+      "topic": "head injury",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/head_injury.md"
+    },
+    "content_preview": "## First Aid Guide: Head Injury\n\n**1. Definition and Symptoms:**\n\nA head injury encompasses any trau..."
+  },
+  {
+    "id": 32,
+    "file_path": "./document_index/nosebleed_32.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Nosebleed",
+      "topic": "nosebleed",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/nosebleed.md"
+    },
+    "content_preview": "## Nosebleed: A Comprehensive First Aid Guide\n\n**1. Definition and Symptoms:**\n\nA nosebleed, also kn..."
+  },
+  {
+    "id": 33,
+    "file_path": "./document_index/bleeding_33.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Bleeding",
+      "topic": "bleeding",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/bleeding.md"
+    },
+    "content_preview": "## First Aid Guide: Bleeding\n\nThis guide provides first aid information for bleeding. It is intended..."
+  },
+  {
+    "id": 34,
+    "file_path": "./document_index/choking_34.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Choking",
+      "topic": "choking",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/choking.md"
+    },
+    "content_preview": "## First Aid Guide: Choking\n\nThis guide provides information on recognizing and responding to chokin..."
+  },
+  {
+    "id": 35,
+    "file_path": "./document_index/heimlich_maneuver_35.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Heimlich Maneuver",
+      "topic": "heimlich maneuver",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/heimlich_maneuver.md"
+    },
+    "content_preview": "## Heimlich Maneuver: A First Aid Guide\n\n**1. Definition and Symptoms**\n\nThe Heimlich maneuver (also..."
+  },
+  {
+    "id": 36,
+    "file_path": "./document_index/cpr_36.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Cpr",
+      "topic": "cpr",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/cpr.md"
+    },
+    "content_preview": "## Cardiopulmonary Resuscitation (CPR) First Aid Guide\n\n**Disclaimer:** This guide provides basic in..."
+  },
+  {
+    "id": 37,
+    "file_path": "./document_index/chest_pain_37.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Chest Pain",
+      "topic": "chest pain",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/chest_pain.md"
+    },
+    "content_preview": "## Chest Pain: A First Aid Guide\n\n**Disclaimer:** This guide is for informational purposes only and ..."
+  },
+  {
+    "id": 38,
+    "file_path": "./document_index/heart_attack_38.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Heart Attack",
+      "topic": "heart attack",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/heart_attack.md"
+    },
+    "content_preview": "## First Aid Guide: Heart Attack (Myocardial Infarction)\n\n**Disclaimer:** This guide is intended for..."
+  },
+  {
+    "id": 39,
+    "file_path": "./document_index/stroke_39.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Stroke",
+      "topic": "stroke",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/stroke.md"
+    },
+    "content_preview": "## First Aid Guide: Stroke\n\n**Disclaimer:** *This guide provides basic first aid information for str..."
+  },
+  {
+    "id": 40,
+    "file_path": "./document_index/seizure_40.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Seizure",
+      "topic": "seizure",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/seizure.md"
+    },
+    "content_preview": "**Seizure: A First Aid Guide**\n\n**Disclaimer:** This guide provides general first aid information an..."
+  },
+  {
+    "id": 41,
+    "file_path": "./document_index/fainting_41.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Fainting",
+      "topic": "fainting",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/fainting.md"
+    },
+    "content_preview": "## Fainting (Syncope) First Aid Guide\n\nThis guide provides information on fainting (syncope), its id..."
+  },
+  {
+    "id": 42,
+    "file_path": "./document_index/unconsciousness_42.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Unconsciousness",
+      "topic": "unconsciousness",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/unconsciousness.md"
+    },
+    "content_preview": "## Unconsciousness: A First Aid Guide\n\n**1. Definition and Symptoms:**\n\nUnconsciousness, also known ..."
+  },
+  {
+    "id": 43,
+    "file_path": "./document_index/shock_43.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Shock",
+      "topic": "shock",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/shock.md"
+    },
+    "content_preview": "## First Aid Guide: Shock\n\nThis guide provides information on recognizing and responding to shock. *..."
+  },
+  {
+    "id": 44,
+    "file_path": "./document_index/heat_exhaustion_44.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Heat Exhaustion",
+      "topic": "heat exhaustion",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/heat_exhaustion.md"
+    },
+    "content_preview": "## Heat Exhaustion: A First Aid Guide\n\nThis document provides information about heat exhaustion, a h..."
+  },
+  {
+    "id": 45,
+    "file_path": "./document_index/heat_stroke_45.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Heat Stroke",
+      "topic": "heat stroke",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/heat_stroke.md"
+    },
+    "content_preview": "## Heat Stroke: A First Aid Guide\n\nThis guide provides information on heat stroke, including definit..."
+  },
+  {
+    "id": 46,
+    "file_path": "./document_index/hypothermia_46.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Hypothermia",
+      "topic": "hypothermia",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/hypothermia.md"
+    },
+    "content_preview": "## Hypothermia: A First Aid Guide\n\nThis guide provides information on hypothermia, its symptoms, tre..."
+  },
+  {
+    "id": 47,
+    "file_path": "./document_index/frostbite_47.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Frostbite",
+      "topic": "frostbite",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/frostbite.md"
+    },
+    "content_preview": "## Frostbite: A First Aid Guide\n\n**1. Definition and Symptoms:**\n\nFrostbite is tissue damage caused ..."
+  },
+  {
+    "id": 48,
+    "file_path": "./document_index/dehydration_48.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Dehydration",
+      "topic": "dehydration",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/dehydration.md"
+    },
+    "content_preview": "## Dehydration: A First Aid Guide\n\nThis guide provides information on recognizing, treating, and pre..."
+  },
+  {
+    "id": 49,
+    "file_path": "./document_index/food_poisoning_49.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Food Poisoning",
+      "topic": "food poisoning",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/food_poisoning.md"
+    },
+    "content_preview": "## First Aid Guide: Food Poisoning\n\n**1. Definition and Symptoms**\n\nFood poisoning, also known as fo..."
+  },
+  {
+    "id": 50,
+    "file_path": "./document_index/vomiting_50.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Vomiting",
+      "topic": "vomiting",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/vomiting.md"
+    },
+    "content_preview": "## Vomiting: A First Aid Guide\n\n**1. Definition and Symptoms:**\n\nVomiting, also known as emesis, is ..."
+  },
+  {
+    "id": 51,
+    "file_path": "./document_index/diarrhea_51.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Diarrhea",
+      "topic": "diarrhea",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/diarrhea.md"
+    },
+    "content_preview": "## First Aid Guide: Diarrhea\n\nThis guide provides information on the definition, symptoms, first aid..."
+  },
+  {
+    "id": 52,
+    "file_path": "./document_index/abdominal_pain_52.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Abdominal Pain",
+      "topic": "abdominal pain",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/abdominal_pain.md"
+    },
+    "content_preview": "## First Aid Guide: Abdominal Pain\n\n**Disclaimer:** This guide provides basic first aid information ..."
+  },
+  {
+    "id": 53,
+    "file_path": "./document_index/stomachache_53.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Stomachache",
+      "topic": "stomachache",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/stomachache.md"
+    },
+    "content_preview": "## First Aid Guide: Stomachache (Abdominal Pain)\n\n**1. Definition and Symptoms:**\n\n**1.1 Definition:..."
+  },
+  {
+    "id": 54,
+    "file_path": "./document_index/indigestion_54.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Indigestion",
+      "topic": "indigestion",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/indigestion.md"
+    },
+    "content_preview": "## First Aid Guide: Indigestion (Dyspepsia)\n\n**1. Definition and Symptoms:**\n\nIndigestion, also know..."
+  },
+  {
+    "id": 55,
+    "file_path": "./document_index/heartburn_55.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Heartburn",
+      "topic": "heartburn",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/heartburn.md"
+    },
+    "content_preview": "## First Aid Guide: Heartburn\n\n**Disclaimer:** This guide provides general information and first aid..."
+  },
+  {
+    "id": 56,
+    "file_path": "./document_index/constipation_56.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Constipation",
+      "topic": "constipation",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/constipation.md"
+    },
+    "content_preview": "## First Aid Guide: Constipation\n\n**Disclaimer:** This guide provides basic first aid information fo..."
+  },
+  {
+    "id": 57,
+    "file_path": "./document_index/back_pain_57.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Back Pain",
+      "topic": "back pain",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/back_pain.md"
+    },
+    "content_preview": "## First Aid Guide: Back Pain\n\n**Disclaimer:** This guide provides general first aid information for..."
+  },
+  {
+    "id": 58,
+    "file_path": "./document_index/muscle_pain_58.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Muscle Pain",
+      "topic": "muscle pain",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/muscle_pain.md"
+    },
+    "content_preview": "## Muscle Pain: A Comprehensive First Aid Guide\n\nThis guide provides information on managing muscle ..."
+  },
+  {
+    "id": 59,
+    "file_path": "./document_index/toothache_59.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Toothache",
+      "topic": "toothache",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/toothache.md"
+    },
+    "content_preview": "## Toothache: A First Aid Guide\n\n**1. Definition and Symptoms:**\n\n*   **Definition:** Toothache refe..."
+  },
+  {
+    "id": 60,
+    "file_path": "./document_index/dental_emergency_60.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Dental Emergency",
+      "topic": "dental emergency",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/dental_emergency.md"
+    },
+    "content_preview": "## Dental Emergency First Aid Guide\n\n**1. Definition and Symptoms**\n\nA dental emergency refers to an..."
+  },
+  {
+    "id": 61,
+    "file_path": "./document_index/wound_cleaning_61.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Wound Cleaning",
+      "topic": "wound cleaning",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/wound_cleaning.md"
+    },
+    "content_preview": "## Wound Cleaning: A Comprehensive First Aid Guide\n\n**1. Definition and Symptoms**\n\n**Definition:** ..."
+  },
+  {
+    "id": 62,
+    "file_path": "./document_index/bandaging_62.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Bandaging",
+      "topic": "bandaging",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/bandaging.md"
+    },
+    "content_preview": "## First Aid Guide: Bandaging\n\nThis guide provides comprehensive information on bandaging techniques..."
+  },
+  {
+    "id": 63,
+    "file_path": "./document_index/splinting_63.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Splinting",
+      "topic": "splinting",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/splinting.md"
+    },
+    "content_preview": "## Splinting: A First Aid Guide\n\nThis guide provides information on splinting, a first aid technique..."
+  },
+  {
+    "id": 64,
+    "file_path": "./document_index/cpr_procedure_64.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Cpr Procedure",
+      "topic": "cpr procedure",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/cpr_procedure.md"
+    },
+    "content_preview": "## Cardiopulmonary Resuscitation (CPR) First Aid Guide\n\n**Disclaimer:** This guide provides basic fi..."
+  },
+  {
+    "id": 65,
+    "file_path": "./document_index/recovery_position_65.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Recovery Position",
+      "topic": "recovery position",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/recovery_position.md"
+    },
+    "content_preview": "## Recovery Position: A First Aid Guide\n\nThis guide provides information on the recovery position, a..."
+  },
+  {
+    "id": 66,
+    "file_path": "./document_index/heimlich_maneuver_66.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Heimlich Maneuver",
+      "topic": "heimlich maneuver",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/heimlich_maneuver.md"
+    },
+    "content_preview": "## Heimlich Maneuver: A First Aid Guide\n\n**1. Definition and Symptoms**\n\nThe Heimlich maneuver (also..."
+  },
+  {
+    "id": 67,
+    "file_path": "./document_index/rescue_breathing_67.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Rescue Breathing",
+      "topic": "rescue breathing",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/rescue_breathing.md"
+    },
+    "content_preview": "## Rescue Breathing: A First Aid Guide\n\n**1. Definition and Symptoms**\n\n**Definition:** Rescue breat..."
+  },
+  {
+    "id": 68,
+    "file_path": "./document_index/stopping_bleeding_68.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Stopping Bleeding",
+      "topic": "stopping bleeding",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/stopping_bleeding.md"
+    },
+    "content_preview": "## First Aid Guide: Stopping Bleeding\n\n**1. Definition and Symptoms**\n\nBleeding, or hemorrhage, is t..."
+  },
+  {
+    "id": 69,
+    "file_path": "./document_index/treating_burns_69.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Treating Burns",
+      "topic": "treating burns",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/treating_burns.md"
+    },
+    "content_preview": "## First Aid Guide: Treating Burns\n\n**1. Definition and Symptoms:**\n\nA burn is an injury to the skin..."
+  },
+  {
+    "id": 70,
+    "file_path": "./document_index/treating_shock_70.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Treating Shock",
+      "topic": "treating shock",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/treating_shock.md"
+    },
+    "content_preview": "## First Aid Guide: Treating Shock\n\n**Disclaimer:** This guide is for informational purposes only an..."
+  },
+  {
+    "id": 71,
+    "file_path": "./document_index/treating_hypothermia_71.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Treating Hypothermia",
+      "topic": "treating hypothermia",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/treating_hypothermia.md"
+    },
+    "content_preview": "## Hypothermia: A Comprehensive First Aid Guide\n\n**1. Definition and Symptoms:**\n\nHypothermia is a d..."
+  },
+  {
+    "id": 72,
+    "file_path": "./document_index/treating_hyperthermia_72.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Treating Hyperthermia",
+      "topic": "treating hyperthermia",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/treating_hyperthermia.md"
+    },
+    "content_preview": "## Hyperthermia: A Comprehensive First Aid Guide\n\n**1. Definition and Symptoms:**\n\nHyperthermia refe..."
+  },
+  {
+    "id": 73,
+    "file_path": "./document_index/treating_sprains_73.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Treating Sprains",
+      "topic": "treating sprains",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/treating_sprains.md"
+    },
+    "content_preview": "## First Aid Guide: Sprains\n\nThis guide provides information on the recognition and initial manageme..."
+  },
+  {
+    "id": 74,
+    "file_path": "./document_index/treating_fractures_74.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Treating Fractures",
+      "topic": "treating fractures",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/treating_fractures.md"
+    },
+    "content_preview": "## First Aid Guide: Fractures\n\nThis guide provides first aid information for suspected fractures. It..."
+  },
+  {
+    "id": 75,
+    "file_path": "./document_index/treating_concussion_75.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Treating Concussion",
+      "topic": "treating concussion",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/treating_concussion.md"
+    },
+    "content_preview": "## Concussion: A First Aid Guide\n\nThis guide provides information on the recognition, initial manage..."
+  },
+  {
+    "id": 76,
+    "file_path": "./document_index/treating_seizures_76.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Treating Seizures",
+      "topic": "treating seizures",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/treating_seizures.md"
+    },
+    "content_preview": "## First Aid Guide: Treating Seizures\n\nThis guide provides information on how to provide first aid f..."
+  },
+  {
+    "id": 77,
+    "file_path": "./document_index/treating_allergic_reactions_77.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Treating Allergic Reactions",
+      "topic": "treating allergic reactions",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/treating_allergic_reactions.md"
+    },
+    "content_preview": "## Allergic Reactions: A Comprehensive First Aid Guide\n\n**Disclaimer:** *This guide provides general..."
+  },
+  {
+    "id": 78,
+    "file_path": "./document_index/treating_anaphylaxis_78.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Treating Anaphylaxis",
+      "topic": "treating anaphylaxis",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/treating_anaphylaxis.md"
+    },
+    "content_preview": "**Anaphylaxis: A First Aid Guide**\n\n**Disclaimer:** This guide provides basic first aid information ..."
+  },
+  {
+    "id": 79,
+    "file_path": "./document_index/using_epipen_79.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: Using Epipen",
+      "topic": "using epipen",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/using_epipen.md"
+    },
+    "content_preview": "**Disclaimer:** This guide is for informational purposes only and should not be considered a substit..."
+  },
+  {
+    "id": 80,
+    "file_path": "./document_index/first_aid_kit_80.txt",
+    "metadata": {
+      "source": "First Aid Information",
+      "title": "First Aid Guide: First Aid Kit",
+      "topic": "first aid kit",
+      "document_type": "generated_first_aid",
+      "date_created": "2025-03-08",
+      "file_path": "./first_aid_data/first_aid_kit.md"
+    },
+    "content_preview": "## First Aid Guide: Common Medical Emergencies and Ailments\n\nThis guide provides general first aid i..."
+  }
+]

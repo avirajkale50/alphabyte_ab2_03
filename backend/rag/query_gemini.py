@@ -44,20 +44,34 @@ class GeminiQuery:
             traceback.print_exc()
             raise
 
+    # backend/rag/query_gemini.py
     def _combine_results(self, faiss_docs, bm25_docs, k):
-        combined = faiss_docs + [
-            Document(
+        # Convert BM25 results to Document objects
+        bm25_documents = []
+        for doc in bm25_docs:
+            # Add defensive programming to ensure 'source' key exists
+            metadata = doc["metadata"]
+            if "source" not in metadata:
+                # Create a default source if missing
+                metadata["source"] = "unknown"
+            
+            bm25_documents.append(Document(
                 page_content=doc["content"],
-                metadata=doc["metadata"]
-            ) for doc in bm25_docs
-        ]
+                metadata=metadata
+            ))
         
+        combined = faiss_docs + bm25_documents
+        
+        # Use a more robust method to deduplicate
         seen = set()
         unique_docs = []
         for doc in combined:
-            if doc.metadata["source"] not in seen:
-                seen.add(doc.metadata["source"])
+            # Handle the case where metadata might not have 'source'
+            source = doc.metadata.get("source", f"doc_{len(seen)}")
+            if source not in seen:
+                seen.add(source)
                 unique_docs.append(doc)
+        
         return unique_docs[:k]
 
     def query(self, question, k=3):
@@ -71,7 +85,24 @@ class GeminiQuery:
             final_docs = self._combine_results(faiss_docs, bm25_docs, k)
             
             context = "\n\n".join([doc.page_content for doc in final_docs])
-            sources = list({doc.metadata["source"] for doc in final_docs})
+            
+            # Use more robust method to extract sources
+            sources = []
+            for doc in final_docs:
+                if "source" in doc.metadata:
+                    sources.append(doc.metadata["source"])
+                elif "path" in doc.metadata:
+                    # Extract filename as source if path exists
+                    sources.append(os.path.basename(doc.metadata["path"]).split('.')[0])
+                else:
+                    # Fallback
+                    sources.append("unknown source")
+            
+            # Remove duplicates while preserving order
+            unique_sources = []
+            for source in sources:
+                if source not in unique_sources:
+                    unique_sources.append(source)
             
             prompt = f"""Answer based on context:
             {context}
@@ -82,10 +113,12 @@ class GeminiQuery:
             response = self.model.generate_content(prompt)
             answer = response.text
             
-            if sources:
-                answer += f"\n\nSources: {', '.join(sources)}"
+            if unique_sources:
+                answer += f"\n\nSources: {', '.join(unique_sources)}"
                 
             return answer
             
         except Exception as e:
+            print(f"Query error: {str(e)}")
+            traceback.print_exc()
             return f"Error generating answer: {str(e)}"

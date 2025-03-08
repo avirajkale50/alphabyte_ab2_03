@@ -26,6 +26,7 @@ class BM25Retriever:
     def _tokenize(self, text):
         return re.findall(r'\w+', text.lower())
     
+    # backend/rag/bm25_retriever.py
     def search(self, query, k=3):
         tokenized_query = self._tokenize(query)
         doc_scores = self.bm25.get_scores(tokenized_query)
@@ -34,8 +35,19 @@ class BM25Retriever:
         
         results = []
         for idx in top_indices:
+            # Ensure metadata has source field
+            metadata = self.metadata[idx] if idx < len(self.metadata) else {}
+            if "source" not in metadata and "path" in metadata:
+                # Extract source from path as fallback
+                path = metadata["path"]
+                source = os.path.basename(path).split('.')[0]
+                metadata["source"] = source
+            elif "source" not in metadata:
+                # Last resort
+                metadata["source"] = f"document_{idx}"
+                
             results.append({
                 "content": self.documents[idx],
-                "metadata": self.metadata[idx]
+                "metadata": metadata
             })
         return results
