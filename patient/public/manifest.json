@@ -1,0 +1,17 @@
+{
+  "name": "SevaMitra - Patient",
+  "short_name": "SafeRoute",
+  "description": "Navigation app for finding safe routes",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4285F4",
+  "icons": [
+    {
+      "src": "./patient.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
