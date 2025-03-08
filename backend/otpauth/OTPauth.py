@@ -82,7 +82,7 @@ def verify_otp():
         'action': 'access_granted'
     }
     redis_client.lpush(access_log_key, json.dumps(access_log))
-    redis_client.ltrim(access_log_key, 0, 99)  # Keep last 100 access logs
+    redis_client.ltrim(access_log_key, 0, 99)  # Keep last 100 access 
     
     # Get list of available text files
     available_files = []
